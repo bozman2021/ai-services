@@ -33,7 +33,7 @@ If you keep all you docker stacks in a directory like $HOME/docker-stacks, you c
 
 macOS and Linux:
 ````
-STACK_DIR="$HOME/docker-stacks/boztunnel"
+STACK_DIR="$HOME/docker-stacks/ai-services"
 mkdir -p $STACK_DIR
 cd $STACK_DIR
 ````
@@ -41,7 +41,7 @@ cd $STACK_DIR
 **Create a Data Directory for cloudflared**
 
 ````
-mkdir -p ./data/cloudflared
+mkdir -p ./data/flowise ./data/n8n/backup ./data/n8n/backup
 ````
 
 **Create the Project from the Template**
