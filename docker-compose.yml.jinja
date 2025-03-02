@@ -58,7 +58,7 @@ services:
      - {{network_name}}:
         ipv4_address: 192.168.22.40
         
-  #--- Flowise ---
+  #--- PostgreSQL ---
   {{postgres_service_name}}:
     image: postgres:16-alpine 
     restart: unless-stopped
@@ -80,10 +80,10 @@ services:
      - {{network_name}}:
         ipv4_address: 192.168.22.50
 
-    #--- Flowise ---
+    #--- N8N-import ---
     {{n8n-import_service_name}}:
     <<: *service-n8n
-    container_name: n8n-import
+    container_name: {{n8n-import_service_name}}
     entrypoint: /bin/sh
     command:
       - "-c"
@@ -97,7 +97,7 @@ services:
   #--- N8N ---
   {{n8n_service_name}}:
     <<: *service-n8n
-    container_name: n8n
+    container_name: {{n8n_service_name}}
     restart: unless-stopped
     ports:
       - "5678:5678"
@@ -117,7 +117,7 @@ services:
   #--- QDRANT ---
   {{qdrant-import_service_name}}:
     image: qdrant/qdrant
-    container_name: qdrant
+    container_name: {{qdrant-import_service_name}}
     restart: unless-stopped
     ports:
       - "6333:6333"
