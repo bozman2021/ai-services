@@ -4,11 +4,17 @@ data_dir:
     type: str
     help: Where should the data be stored?
     default: ./data
-
+    
+conf_dir:
+    type: str
+    help: Where should the configuration be stored?
+    default: ./conf
+    
 domain_name:
     type: str
+    default: "askboz.se"
     help: On which domain do you want to publish the services?
-
+    
 api_subdomain:
     type: str
     help: What is the API subdomain?
@@ -17,8 +23,24 @@ api_subdomain:
 app_subdomain:
     type: str
     help: What is the app subdomain?
-    default: app
+    default: chat
 
+db_service_name:
+    type: str
+    help: What is the name of the DB service?
+    default: db
+    
+db_name:
+    type: str
+    help: What is the name of the DB to set in PostgresDB?
+    default: litellm
+ 
+db_secret_pwd:
+    type: str
+    secret: true
+    help: What is password to set in PostgresDB?
+    default: "{{ 999999|ans_random|hash('sha256')|urlencode }}"
+  
 cloudflare_api_token:
     type: str
     secret: true
@@ -54,16 +76,46 @@ caddy_service_name:
     type: str
     help: What is the name of the Caddy service?
     default: caddy
+    
+llm_service_name:
+    type: str
+    help: What is the name of the LiteLLM service?
+    default: litellm
 
 webui_service_name:
     type: str
     help: What is the name of the OpenWebUI service?
     default: openwebui
 
-webui_port:
-    type: int
-    help: On which port shall OpenWebUI listen (0 means openwebui is not exposed, directly)?
-    default: 3200
+anthropic_api_key:
+    type: str
+    secret: true
+    default: ""
+    help: What is the ANTHROPIC API KEY?
+
+openai_api_key:
+    type: str
+    secret: true
+    default: ""
+    help: What is the OPENAI API KEY?
+
+groq_api_key:
+    type: str
+    secret: true
+    default: ""
+    help: What is the GROQ API KEY?
+
+litellm_master_key:
+    type: str
+    secret: true
+    help: What is the LITELLM MASTER KEY?
+    default: "{{ 999999999999999999999999999999999|ans_random|hash('sha256')|urlencode }}"
+
+#Removed in v2, defaulting to 8080
+#webui_port:
+#    type: int
+#    help: On which port shall OpenWebUI listen (0 means openwebui is not exposed, directly)?
+#    default: 3200
 
 webui_secret_key:
     type: str
@@ -71,15 +123,16 @@ webui_secret_key:
     secret: true
     default: "{{ 999999999999999999999999999999999|ans_random|hash('sha256')|urlencode }}"
 
-publish_locally:
-    type: bool
-    help: Do you want to publish the tunnel locally on port 443?
-    default: true
+#Removed in v2, defaulting to true
+#publish_locally:
+#    type: bool
+#    help: Do you want to publish the tunnel locally on port 443?
+#   default: true
 
 network_name:
     type: str
-    help: What is the name of the docker network?
-    default: boztunnel
+    help: What is the name of the docker network (IPVLAN)?
+    default: cloudl3net
 
 # configurations
 _exclude:
