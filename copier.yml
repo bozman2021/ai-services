@@ -1,4 +1,23 @@
+
+
 # questions
+# copier.yml
+_min_copier_version: "6.0.0"  # Ensure compatibility with Copier v6.0.0 or higher
+
+network_number:
+  type: str
+  help: "Enter your network number (e.g., 192.168.1.0/24):"
+  validator: |
+    {% set ip, prefix = network_number.split('/') if '/' in network_number else (None, None) %}
+    {% set octets = ip.split('.') if ip else [] %}
+    {% if not ip or not prefix.isdigit() or not (0 <= int(prefix) <= 32) or not (
+          len(octets) == 4 and all(o.isdigit() and 0 <= int(o) <= 255 for o in octets)
+        ) %}
+      Invalid network number. Please enter a valid CIDR notation (e.g., 192.168.1.0/24).
+    {% endif %}
+
+
+
 
 data_dir:
     type: str
