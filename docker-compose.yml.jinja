@@ -1,75 +1,5 @@
 #version: '3'
 
-networks:
-  {{network_name}}:
-    driver: bridge
-
-services:
-  #--- OpenWebUI  ---
-  {{webui_service_name}}:
-    image: ghcr.io/open-webui/open-webui:main
-    restart: unless-stopped
-    environment:
-      - OLLAMA_API_BASE_URL=http://host.docker.internal:11434/api
-      - WEBUI_SECRET_KEY=${WEBUI_SECRET_KEY}
-    volumes:
-      - ${DATA_DIR-./data}/open-webui:/app/backend/data
-    {% if webui_port %}
-    ports:
-      - ${WEBUI_PORT-3000}:8080
-    {% endif %}
-    networks:
-      - {{network_name}}
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-  #--- Caddy ---
-  {{caddy_service_name}}:
-    build:
-      context: ./images/caddy
-      dockerfile: ./Dockerfile
-    restart: unless-stopped
-    depends_on:
-      - {{webui_service_name}}
-    environment:
-      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
-      - DOMAIN_NAME=${DOMAIN_NAME}
-      - API_SUBDOMAIN=${API_SUBDOMAIN}
-      - APP_SUBDOMAIN=${APP_SUBDOMAIN}
-      - OLLAMA_URL=${OLLAMA_URL}
-      - OLLAMA_API_KEY=${OLLAMA_API_KEY}
-      - WEBUI_SERVICE_NAME=${WEBUI_SERVICE_NAME}
-    volumes:
-      - ./conf/caddy/Caddyfile:/etc/caddy/Caddyfile
-      - ./conf/caddy/401.json:/srv/401.json
-      - ${DATA_DIR-./data}/caddy:/data/caddy
-    {% if publish_locally %}
-    ports:
-      - "443:443"
-    {% endif %}
-    networks:
-      - {{network_name}}
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-  #--- Cloudflared ---
-  {{cloudflared_service_name}}:
-    image: cloudflare/cloudflared
-    restart: unless-stopped
-    depends_on:
-      - {{caddy_service_name}}
-    volumes:
-      - ./conf/cloudflared/config.yaml:/etc/cloudflared/config.yml
-      - ${DATA_DIR-./data}/cloudflared/credentials.json:/etc/cloudflared/credentials.json
-    command: tunnel --config /etc/cloudflared/config.yml run #--loglevel debug run
-    networks:
-      - {{network_name}}
-
-
-
-
-
-
-
-
 volumes:
   n8n_storage:
   postgres_storage:
@@ -84,14 +14,17 @@ networks:
       ipvlan_mode: l3 # Layer 3 mode
     ipam:
       config:
-        - subnet: 192.168.22.0/24 # your networks subnet
-        - subnet: 192.168.23.0/24 # your networks subnet
+        - subnet: {{network_name_subnet_1}}/24 # your networks subnet
+        - subnet: {{network_name_subnet_2}}/24 # your networks subnet
     name: {{network_name}}
+
 services:
 
-x-n8n: &service-n8n
+#--- X-N8N ---
+{{x-n8n_service_name}}: &service-n8n
   image: n8nio/n8n:latest
-  networks: ['demo']
+  restart: unless-stopped
+  container_name: {{x-n8n_service_name}}
   environment:
     - DB_TYPE=postgresdb
     - DB_POSTGRESDB_HOST=postgres
@@ -103,30 +36,35 @@ x-n8n: &service-n8n
     - N8N_USER_MANAGEMENT_JWT_SECRET
   links:
     - postgres
-
-
-services:
-  {{webui_service_name}} flowise:
+  networks:
+     - {{network_name}}:
+        ipv4_address: 192.168.22.30
+  
+  #--- Flowise ---
+  {{flowise_service_name}}:
     image: flowiseai/flowise
-    networks: ['demo']
     restart: unless-stopped
-    container_name: flowise
+    container_name: {{flowise_service_name}}
     environment:
         - PORT=3001
     ports:
-        - 3001:3001
+        - "3001:3001"
     extra_hosts:
       - "host.docker.internal:host-gateway"        
     volumes:
         - ${DATA_DIR-./data}/flowise:/root/.flowise
     entrypoint: /bin/sh -c "sleep 3; flowise start"
-
-  postgres:
-    image: postgres:16-alpine
-    networks: ['demo']
+    networks:
+     - {{network_name}}:
+        ipv4_address: 192.168.22.40
+        
+  #--- Flowise ---
+  {{postgres_service_name}}:
+    image: postgres:16-alpine 
     restart: unless-stopped
+    container_name: {{postgres_service_name}}
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
@@ -138,8 +76,12 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    networks:
+     - {{network_name}}:
+        ipv4_address: 192.168.22.50
 
-  n8n-import:
+    #--- Flowise ---
+    {{n8n-import_service_name}}:
     <<: *service-n8n
     container_name: n8n-import
     entrypoint: /bin/sh
@@ -151,13 +93,14 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-
-  n8n:
+        
+  #--- N8N ---
+  {{n8n_service_name}}:
     <<: *service-n8n
     container_name: n8n
     restart: unless-stopped
     ports:
-      - 5678:5678
+      - "5678:5678"
     volumes:
       - n8n_storage:/home/node/.n8n
       - ${DATA_DIR-./data}/n8n/backup:/backup
@@ -167,14 +110,19 @@ services:
         condition: service_healthy
       n8n-import:
         condition: service_completed_successfully
+    networks:
+     - {{network_name}}:
+        ipv4_address: 192.168.22.55
 
-  qdrant:
+  #--- QDRANT ---
+  {{qdrant-import_service_name}}:
     image: qdrant/qdrant
     container_name: qdrant
-    networks: ['demo']
     restart: unless-stopped
     ports:
-      - 6333:6333
+      - "6333:6333"
     volumes:
       - ${DATA_DIR-./data}/qdrant_storage:/qdrant/storage
-
+    networks:
+     - {{network_name}}:
+        ipv4_address: 192.168.22.55
