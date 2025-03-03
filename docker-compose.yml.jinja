@@ -136,8 +136,8 @@ services:
  #------------------------------
  #------------------------------
  
- {{studio-import_service_name}}:
-    container_name: supabase-{{studio-import_service_name}}
+ {{studio_service_name}}:
+    container_name: supabase-{{studio_service_name}}
     image: supabase/studio:20250224-d10db0f
     restart: unless-stopped
     healthcheck:
@@ -176,8 +176,8 @@ services:
       # Uncomment to use Big Query backend for analytics
       # NEXT_ANALYTICS_BACKEND_PROVIDER: bigquery
 
-  {{kong-import_service_name}}:
-    container_name: supabase-{{kong-import_service_name}}
+  {{kong_service_name}}:
+    container_name: supabase-{{kong_service_name}}
     image: kong:2.8.1
     restart: unless-stopped
     ports:
@@ -204,8 +204,8 @@ services:
     # https://unix.stackexchange.com/a/294837
     entrypoint: bash -c 'eval "echo \"$$(cat ~/temp.yml)\"" > ~/kong.yml && /docker-entrypoint.sh kong docker-start'
 
-  auth:
-    container_name: supabase-auth
+  {{auth_service_name}}:
+    container_name: supabase-{{auth_service_name}}
     image: supabase/gotrue:v2.169.0
     restart: unless-stopped
     healthcheck:
@@ -287,8 +287,8 @@ services:
       # GOTRUE_HOOK_SEND_EMAIL_URI: "http://host.docker.internal:54321/functions/v1/email_sender"
       # GOTRUE_HOOK_SEND_EMAIL_SECRETS: "v1,whsec_VGhpcyBpcyBhbiBleGFtcGxlIG9mIGEgc2hvcnRlciBCYXNlNjQgc3RyaW5n"
 
-  rest:
-    container_name: supabase-rest
+  {{rest_service_name}}:
+    container_name: supabase-{{rest_service_name}}
     image: postgrest/postgrest:v12.2.8
     restart: unless-stopped
     depends_on:
@@ -310,9 +310,9 @@ services:
         "postgrest"
       ]
 
-  realtime:
+  {{realtime_service_name}}:
     # This container name looks inconsistent but is correct because realtime constructs tenant id by parsing the subdomain
-    container_name: realtime-dev.supabase-realtime
+    container_name: realtime-dev.supabase-{{realtime_service_name}}
     image: supabase/realtime:v2.34.31
     restart: unless-stopped
     depends_on:
@@ -356,8 +356,8 @@ services:
       RUN_JANITOR: true
 
   # To use S3 backed storage: docker compose -f docker-compose.yml -f docker-compose.s3.yml up
-  storage:
-    container_name: supabase-storage
+ {{storage_service_name}}:
+    container_name: supabase-{{storage_service_name}}
     image: supabase/storage-api:v1.19.1
     restart: unless-stopped
     volumes:
@@ -399,8 +399,8 @@ services:
       ENABLE_IMAGE_TRANSFORMATION: "true"
       IMGPROXY_URL: http://imgproxy:5001
 
-  imgproxy:
-    container_name: supabase-imgproxy
+  {{imgproxy_service_name}}:
+    container_name: supabase-{{imgproxy_service_name}}
     image: darthsim/imgproxy:v3.8.0
     restart: unless-stopped
     volumes:
@@ -421,8 +421,8 @@ services:
       IMGPROXY_USE_ETAG: "true"
       IMGPROXY_ENABLE_WEBP_DETECTION: ${IMGPROXY_ENABLE_WEBP_DETECTION}
 
-  meta:
-    container_name: supabase-meta
+  {{meta_service_name}}:
+    container_name: supabase-{{meta_service_name}}
     image: supabase/postgres-meta:v0.86.0
     restart: unless-stopped
     depends_on:
@@ -439,8 +439,8 @@ services:
       PG_META_DB_USER: supabase_admin
       PG_META_DB_PASSWORD: ${POSTGRES_PASSWORD}
 
-  functions:
-    container_name: supabase-edge-functions
+  {{functions_service_name}}:
+    container_name: supabase-edge-{{functions_service_name}}
     image: supabase/edge-runtime:v1.67.2
     restart: unless-stopped
     volumes:
@@ -463,8 +463,8 @@ services:
         "/home/deno/functions/main"
       ]
 
-  analytics:
-    container_name: supabase-analytics
+  {{analytics_service_name}}:
+    container_name: supabase-{{analytics_service_name}}
     image: supabase/logflare:1.11.0
     restart: unless-stopped
     ports:
@@ -511,8 +511,8 @@ services:
       # GOOGLE_PROJECT_NUMBER: ${GOOGLE_PROJECT_NUMBER}
 
   # Comment out everything below this point if you are using an external Postgres database
-  db:
-    container_name: supabase-db
+  {{db_service_name}}:
+    container_name: supabase-{{db_service_name}}
     image: supabase/postgres:15.8.1.044
     restart: unless-stopped
     volumes:
@@ -568,8 +568,8 @@ services:
         "log_min_messages=fatal" # prevents Realtime polling queries from appearing in logs
       ]
 
-  vector:
-    container_name: supabase-vector
+  {{vector_service_name}}:
+    container_name: supabase-{{vector_service_name}}
     image: timberio/vector:0.28.1-alpine
     restart: unless-stopped
     volumes:
@@ -597,8 +597,8 @@ services:
       ]
 
   # Update the DATABASE_URL if you are using an external Postgres database
-  supavisor:
-    container_name: supabase-pooler
+  {{supavisor_service_name}}:
+    container_name: supabase-pooler-{{supavisor_service_name}}
     image: supabase/supavisor:2.3.9
     restart: unless-stopped
     ports:
