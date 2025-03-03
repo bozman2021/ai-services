@@ -111,6 +111,66 @@ qdrant-import_service_name:
     help: What is the qdrant service name?
     default: qdrant
 
+    
+    
+accept_supa_name_defaults:
+  type: bool
+  default: "yes"
+  help: "Do you want to accept all default for SUPABASE service name settings?"
+  
+studio_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-studio service name?
+    default: studio
+    
+kong_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-kong service name?
+    default: kong
+    
+auth_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-auth service name?
+    default: auth
+    
+rest_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-rest service name?
+    default: rest
+    
+realtime_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-realtime service name?
+    default: realtime
+
+imgproxy_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-imgproxy service name?
+    default: imgproxy
+
+meta_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-meta service name?
+    default: meta
+    
+analytics_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-analytics service name?
+    default: analytics
+
+ db_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-db service name?
+    default: db
 
 
 
