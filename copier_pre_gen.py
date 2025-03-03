@@ -9,4 +9,4 @@ def generate_password(length=16):
 def hook(context):
     # Generate values and inject them into Copier's context
     context['postgress_password'] = generate_password()
-    context['random_uuid'] = str(uuid.uuid4())  # Store as string for Jinja
+    #context['random_uuid'] = str(uuid.uuid4())  # Store as string for Jinja
