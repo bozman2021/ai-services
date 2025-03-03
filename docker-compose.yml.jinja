@@ -83,9 +83,9 @@ services:
         ipv4_address: 192.168.23.50
 
     #--- N8N-import ---
-    {{n8n-import_service_name}}:
+    {{n8n_import_service_name}}:
     <<: *service-n8n
-    container_name: {{n8n-import_service_name}}
+    container_name: {{n8n_import_service_name}}
     entrypoint: /bin/sh
     command:
       - "-c"
@@ -117,8 +117,8 @@ services:
         ipv4_address: 192.168.23.55
 
   #--- QDRANT ---
-  {{qdrant-import_service_name}}:
-    container_name: {{qdrant-import_service_name}}
+  {{qdrant_import_service_name}}:
+    container_name: {{qdrant_import_service_name}}
     image: qdrant/qdrant
     restart: unless-stopped
     ports:
