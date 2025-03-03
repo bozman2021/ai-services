@@ -23,8 +23,8 @@ networks:
 services:
 
 #--- X-N8N ---
-{{x-n8n_service_name}}: &service-n8n
-  container_name: {{x-n8n_service_name}}
+{{x_n8n_service_name}}: &service-n8n
+  container_name: {{x_n8n_service_name}}
   image: n8nio/n8n:latest
   restart: unless-stopped
   environment:
