@@ -3,9 +3,6 @@ _templates_suffix: .jinja
 # Other Copier configurations
 _min_copier_version: "9.0.0"
 # configurations
-_trust: true
-_jinja_extensions:
-  - jinja2.ext.do
 _exclude:
   - copier.yaml
   - copier.yml
