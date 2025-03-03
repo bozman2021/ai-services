@@ -2,6 +2,51 @@
 _templates_suffix: .jinja
 # Other Copier configurations
 _min_copier_version: "9.0.0"
+# configurations
+_exclude:
+  - copier.yaml
+  - copier.yml
+  - ~*
+  - "*.py[co]"
+  - __pycache__
+  - .git
+  - .DS_Store
+  - .svn"
+  - data
+  - _macros
+  - _traefik*_labels.yml
+  - /.git
+  - /.github
+  - /.gitmodules
+  - /.vscode/launch.json
+  - /.vscode/settings.json
+  - /**.pyc
+  - /**.pyo
+  - /CONTRIBUTING.md
+  - /copier.yml
+  - /COPYING
+  - /docs
+  - /migrations.py
+  - /poetry.lock
+  - /pyproject.toml
+  - /scripts
+  - /tasks_downstream.py
+  - /tests
+  - /vendor
+
+  
+#questions:
+#  network_number:
+#    type: str
+#    help: "Enter your network number in CIDR format (e.g., 192.168.1.0/24):"
+#    validator: >
+#      import re;
+#      pattern = r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]{1,2}$";
+#      match = re.match(pattern, network_number);
+#      parts = network_number.split("/") if match else [];
+#      valid_ip = all(0 <= int(octet) <= 255 for octet in parts[0].split(".")) if parts else False;
+#      valid_prefix = 0 <= int(parts[1]) <= 32 if parts else False;
+#      match and valid_ip and valid_prefix or "Invalid CIDR format. Use e.g., 192.168.1.0/24"
     
 
 
@@ -15,6 +60,11 @@ conf_dir:
     help: Where should the configuration be stored?
     default: ./conf
     
+network_name:
+    type: str
+    help: What is the name of the docker network (IPVLAN)?
+    default: cloudl3net-ai2
+    
 domain_name:
     type: str
     default: "askboz.se"
@@ -27,16 +77,99 @@ accept_name_defaults:
   
 n8n_service_name:
     type: str
-    when: "{{ accept_name_defaults and true}}"
+    when: "{{ accept_name_defaults and false}}"
     help: What is the n8n service name?
     default: n8n
     
 x-n8n_service_name:
     type: str
-    when: "{{ accept_name_defaults and true }}"
+    when: "{{ accept_name_defaults and false }}"
     help: What is the x-n8n service name?
     default: x-n8n
 
+n8n-import_service_name:
+    type: str
+    when: "{{ not accept_name_defaults }}"
+    help: What is the n8n-import service name?
+    default: n8n-import
+
+flowise_service_name:
+    type: str
+    when: "{{ not accept_name_defaults }}"
+    help: What is the flowise service name?
+    default: flowise
+
+postgres_service_name:
+    type: str
+    when: "{{ not accept_name_defaults }}"
+    help: What is the postgres for N8N service name?
+    default: db_n8n
+
+qdrant-import_service_name:
+    type: str
+    when: "{{ not accept_name_defaults }}"
+    help: What is the qdrant service name?
+    default: qdrant
+    
+#---- Supabase -----
+accept_supa_name_defaults:
+  type: bool
+  default: "yes"
+  help: "Do you want to accept all default for SUPABASE service name settings?"
+  
+studio_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-studio service name?
+    default: studio
+    
+kong_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-kong service name?
+    default: kong
+    
+auth_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-auth service name?
+    default: auth
+    
+rest_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-rest service name?
+    default: rest
+    
+realtime_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-realtime service name?
+    default: realtime
+
+imgproxy_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-imgproxy service name?
+    default: imgproxy
+
+meta_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-meta service name?
+    default: meta
+    
+analytics_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-analytics service name?
+    default: analytics
+
+ db_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-db service name?
+    default: db_supa
 
 
 
