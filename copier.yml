@@ -152,6 +152,28 @@ realtime_service_name:
     help: What is the supabase-realtime service name?
     default: realtime
 
+imgproxy_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-imgproxy service name?
+    default: imgproxy
 
+meta_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-meta service name?
+    default: meta
+    
+analytics_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-analytics service name?
+    default: analytics
+
+ db_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-db service name?
+    default: db
 
 
