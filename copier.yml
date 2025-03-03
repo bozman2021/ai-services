@@ -179,3 +179,80 @@ db_service_name:
     when: "{{ not accept_supa_name_defaults }}"
     help: What is the supabase-db service name?
     default: db
+
+    
+#----- Supabase installation ----- 
+postgress_password:
+    type: str
+    help: What is your POSTGRES PASSWORD, press enter to regenerate it?
+    secret: true
+    default: "{{ 999999999999999999999999999999999|ans_random|hash('sha256')|urlencode }}"
+    
+jwt_secret:
+    type: str
+    help: What is your JWT SECRET, press enter to regenerate it?
+    secret: true
+    default: "{{ 999999999999999999999999999999999|ans_random|hash('sha256')|urlencode }}"
+
+anon_key:
+    type: str
+    help: What is your ANON KEY, press enter to regenerate it?
+    secret: true
+    default: "{{ 999999999999999999999999999999999|ans_random|hash('sha256')|urlencode }}"
+    
+service_role_key:
+    type: str
+    help: What is your SERVICE ROLE KEY, press enter to regenerate it?
+    secret: true
+    default: "{{ 999999999999999999999999999999999|ans_random|hash('sha256')|urlencode }}"
+    
+dashboard_username:
+    type: str
+    help: What is your Supabase Username?
+    default: "supabase"
+    
+dashboard_password:
+    type: str
+    help: What is your Supabase Username password, press enter to regenerate it?
+    secret: true
+    default: "{{ 999999999999999999999999999999999|ans_random|hash('sha256')|urlencode }}"
+
+secret_key_base:
+    type: str
+    help: What is your SECRET KEY BASE, press enter to regenerate it?
+    secret: true
+    default: "{{ 999999999999999999999999999999999|ans_random|hash('sha256')|urlencode }}"
+    
+vault_enc_key:
+    type: str
+    help: What is your VAULT ENC KEY, press enter to regenerate it?
+    secret: true
+    default: "{{ 999999999999999999999999999999999|ans_random|hash('sha256')|urlencode }}"
+
+openai_api_key:
+    type: str
+    help: What is your OPENAI API KEY, press enter to regenerate it?
+    secret: true
+    default: ""
+    
+logflare_logger_backend_api_key:
+    type: str
+    help: What is your LOGFLARE LOGGER BACKEND API KEY, press enter to regenerate it?
+    secret: true
+    default: ""  
+    
+logflare_logger_backend_api_key:
+    type: str
+    help: What is your LOGFLARE LOGGER BACKEND API KEY, press enter to regenerate it?
+    secret: true
+    default: "" 
+    
+logflare_api_key:
+    type: str
+    help: What is your LOGFLARE API KEY, press enter to regenerate it?
+    secret: true
+    default: "" 
+
+
+
+
