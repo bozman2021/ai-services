@@ -186,16 +186,15 @@ db_service_name:
 #----- Supabase installation ----- 
 
 postgress_password:
-    type: str
-    help: What is your POSTGRES PASSWORD, press enter to regenerate it?
-    secret: true
-    default: >-
-      {{
-        ''.join(
-          random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()")
-          for _ in range(16)
-        )
-      }}
+  type: str
+  default: >-
+    {{
+      ''.join(
+        random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()")
+        for _ in range(16)
+      )
+    }}
+  help: "What is your POSTGRES PASSWORD, press enter to regenerate it"
     
 jwt_secret:
     type: str
