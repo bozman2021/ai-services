@@ -62,6 +62,16 @@ network_name:
     type: str
     help: What is the name of the docker network (IPVLAN)?
     default: cloudl3net-ai2
+
+network_name_subnet_1:
+    type: str
+    help: What is the name of the docker network IP segment 1?
+    default: 192.168.23.0/24
+    
+network_name_subnet_2:
+    type: str
+    help: What is the name of the docker network IP segment 2?
+    default: 192.168.24.0/24
     
 domain_name:
     type: str
