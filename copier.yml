@@ -189,12 +189,12 @@ postgress_password:
     help: What is your POSTGRES PASSWORD, press enter to regenerate it?
     secret: true
     default: >-
-    {{
-      ''.join(
-        random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()")
-        for _ in range(16)
-      )
-    }}
+      {{
+        ''.join(
+          random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()")
+          for _ in range(16)
+        )
+      }}
     
 jwt_secret:
     type: str
@@ -224,12 +224,12 @@ dashboard_password:
     help: What is your Supabase Username password, press enter to regenerate it?
     secret: true
     default: >-
-    {{
-      ''.join(
-        random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()")
-        for _ in range(16)
-      )
-    }}
+      {{
+        ''.join(
+          random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()")
+          for _ in range(16)
+        )
+      }}
 
 secret_key_base:
     type: str
