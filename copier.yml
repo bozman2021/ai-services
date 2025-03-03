@@ -19,6 +19,47 @@ data_dir:
     help: Where should the data be stored?
     default: ./data
 
+conf_dir:
+    type: str
+    help: Where should the configuration be stored?
+    default: ./conf
+    
+domain_name:
+    type: str
+    default: "askboz.se"
+    help: On which domain do you want to publish the services?
+
+n8n_service_name:
+    type: str
+    help: What is the n8n subdomain?
+    default: n8n
+    
+x-n8n_service_name:
+    type: str
+    help: What is the x-n8n subdomain?
+    default: x-n8n
+
+n8n-import_service_name:
+    type: str
+    help: What is the n8n-import subdomain?
+    default: n8n-import
+
+flowise_service_name:
+    type: str
+    help: What is the flowise subdomain?
+    default: flowise
+
+postgres_service_name:
+    type: str
+    help: What is the postgres subdomain?
+    default: db_n8n
+
+qdrant-import_service_name:
+    type: str
+    help: What is the qdrant subdomain?
+    default: qdrant
+
+    
 # configurations
 _exclude:
   - docs
