@@ -1,3 +1,5 @@
+_jinja_extensions:
+  - jinja2.ext.do
 # Configure jinja2 defaults to make syntax highlighters lives easier
 _templates_suffix: .jinja
 # Other Copier configurations
@@ -186,7 +188,13 @@ postgress_password:
     type: str
     help: What is your POSTGRES PASSWORD, press enter to regenerate it?
     secret: true
-    default: "{{ secrets.token_urlsafe(16) }}"
+    default: >-
+    {{
+      ''.join(
+        random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()")
+        for _ in range(16)
+      )
+    }}
     
 jwt_secret:
     type: str
@@ -215,7 +223,13 @@ dashboard_password:
     type: str
     help: What is your Supabase Username password, press enter to regenerate it?
     secret: true
-    default: "{{ secrets.token_urlsafe(16) }}"
+    default: >-
+    {{
+      ''.join(
+        random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()")
+        for _ in range(16)
+      )
+    }}
 
 secret_key_base:
     type: str
