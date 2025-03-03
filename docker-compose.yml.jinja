@@ -8,13 +8,6 @@
 
 name: supabase
 
-
-volumes:
-  n8n_storage:
-  postgres_storage:
-  qdrant_storage:
-  flowise:
-
 networks:
   {{network_name}}:
     driver: ipvlan
@@ -143,8 +136,8 @@ services:
  #------------------------------
  #------------------------------
  
- studio:
-    container_name: supabase-studio
+ {{studio-import_service_name}}:
+    container_name: supabase-{{studio-import_service_name}}
     image: supabase/studio:20250224-d10db0f
     restart: unless-stopped
     healthcheck:
@@ -183,8 +176,8 @@ services:
       # Uncomment to use Big Query backend for analytics
       # NEXT_ANALYTICS_BACKEND_PROVIDER: bigquery
 
-  kong:
-    container_name: supabase-kong
+  {{kong-import_service_name}}:
+    container_name: supabase-{{kong-import_service_name}}
     image: kong:2.8.1
     restart: unless-stopped
     ports:
@@ -192,7 +185,7 @@ services:
       - ${KONG_HTTPS_PORT}:8443/tcp
     volumes:
       # https://github.com/supabase/supabase/issues/12661
-      - ./volumes/api/kong.yml:/home/kong/temp.yml:ro
+      - ${DATA_DIR-./data}/kong/api/kong.yml:/home/kong/temp.yml:ro
     depends_on:
       analytics:
         condition: service_healthy
@@ -411,7 +404,7 @@ services:
     image: darthsim/imgproxy:v3.8.0
     restart: unless-stopped
     volumes:
-      - ./volumes/storage:/var/lib/storage:z
+      - ${DATA_DIR-./data}/supabase/imageproxy/storage:/var/lib/storage:z
     healthcheck:
       test:
         [
@@ -523,23 +516,23 @@ services:
     image: supabase/postgres:15.8.1.044
     restart: unless-stopped
     volumes:
-      - ./volumes/db/realtime.sql:/docker-entrypoint-initdb.d/migrations/99-realtime.sql:Z
+      - ${DATA_DIR-./data}/supabase/db/volumes/db/realtime.sql:/docker-entrypoint-initdb.d/migrations/99-realtime.sql:Z
       # Must be superuser to create event trigger
-      - ./volumes/db/webhooks.sql:/docker-entrypoint-initdb.d/init-scripts/98-webhooks.sql:Z
+      - ${DATA_DIR-./data}/supabase/db/volumes/db/webhooks.sql:/docker-entrypoint-initdb.d/init-scripts/98-webhooks.sql:Z
       # Must be superuser to alter reserved role
-      - ./volumes/db/roles.sql:/docker-entrypoint-initdb.d/init-scripts/99-roles.sql:Z
+      - ${DATA_DIR-./data}/supabase/db/volumes/db/roles.sql:/docker-entrypoint-initdb.d/init-scripts/99-roles.sql:Z
       # Initialize the database settings with JWT_SECRET and JWT_EXP
-      - ./volumes/db/jwt.sql:/docker-entrypoint-initdb.d/init-scripts/99-jwt.sql:Z
+      - ${DATA_DIR-./data}/supabase/db/volumes/db/jwt.sql:/docker-entrypoint-initdb.d/init-scripts/99-jwt.sql:Z
       # PGDATA directory is persisted between restarts
-      - ./volumes/db/data:/var/lib/postgresql/data:Z
+      - ${DATA_DIR-./data}/supabase/db/volumes/db/data:/var/lib/postgresql/data:Z
       # Changes required for internal supabase data such as _analytics
-      - ./volumes/db/_supabase.sql:/docker-entrypoint-initdb.d/migrations/97-_supabase.sql:Z
+      - ${DATA_DIR-./data}/supabase/db/volumes/db/_supabase.sql:/docker-entrypoint-initdb.d/migrations/97-_supabase.sql:Z
       # Changes required for Analytics support
-      - ./volumes/db/logs.sql:/docker-entrypoint-initdb.d/migrations/99-logs.sql:Z
+      - ${DATA_DIR-./data}/supabase/db/volumes/db/logs.sql:/docker-entrypoint-initdb.d/migrations/99-logs.sql:Z
       # Changes required for Pooler support
-      - ./volumes/db/pooler.sql:/docker-entrypoint-initdb.d/migrations/99-pooler.sql:Z
+      - ${DATA_DIR-./data}/supabase/db/volumes/db/pooler.sql:/docker-entrypoint-initdb.d/migrations/99-pooler.sql:Z
       # Use named volume to persist pgsodium decryption key between restarts
-      - db-config:/etc/postgresql-custom
+      - ${DATA_DIR-./data}/supabase/db/db-config:/etc/postgresql-custom
     healthcheck:
       test:
         [
@@ -580,7 +573,7 @@ services:
     image: timberio/vector:0.28.1-alpine
     restart: unless-stopped
     volumes:
-      - ./volumes/logs/vector.yml:/etc/vector/vector.yml:ro
+      - ${DATA_DIR-./data}/supabase/vector/volumes/logs/vector.yml:/etc/vector/vector.yml:ro
       - ${DOCKER_SOCKET_LOCATION}:/var/run/docker.sock:ro
     healthcheck:
       test:
@@ -612,7 +605,7 @@ services:
       - ${POSTGRES_PORT}:5432
       - ${POOLER_PROXY_PORT_TRANSACTION}:6543
     volumes:
-      - ./volumes/pooler/pooler.exs:/etc/pooler/pooler.exs:ro
+      - ${DATA_DIR-./data}/supabase/pooler/volumes/pooler.exs:/etc/pooler/pooler.exs:ro
     healthcheck:
       test:
         [
@@ -655,6 +648,3 @@ services:
         "-c",
         "/app/bin/migrate && /app/bin/supavisor eval \"$$(cat /etc/pooler/pooler.exs)\" && /app/bin/server"
       ]
-
-volumes:
-  db-config:
