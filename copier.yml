@@ -187,13 +187,7 @@ db_service_name:
 
 postgress_password:
   type: str
-  default: >-
-    {{
-      ''.join(
-        random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()")
-        for _ in range(16)
-      )
-    }}
+  default: ""
   help: "What is your POSTGRES PASSWORD, press enter to regenerate it"
     
 jwt_secret:
@@ -221,15 +215,9 @@ dashboard_username:
     
 dashboard_password:
     type: str
-    help: What is your Supabase Username password, press enter to regenerate it?
     secret: true
-    default: >-
-      {{
-        ''.join(
-          random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()")
-          for _ in range(16)
-        )
-      }}
+    default: ""
+    help: What is your Supabase Username password, press enter to regenerate it?
 
 secret_key_base:
     type: str
