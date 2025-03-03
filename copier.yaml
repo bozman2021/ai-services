@@ -196,19 +196,19 @@ jwt_secret:
     type: str
     help: What is your JWT SECRET, press enter to regenerate it?
     secret: true
-    default: "{{ uuid4().hex }}.{{ uuid4().hex }}.{{ uuid4().hex }}"
+    default: "{{ 999999999999999999999999999999999|ans_random|hash('sha256')|truncate(32, True, '') }}"
 
 anon_key:
     type: str
     help: What is your ANON KEY, press enter to regenerate it?
     secret: true
-    default: "{{ uuid4().hex }}.{{ uuid4().hex }}.{{ uuid4().hex }}"
+    default: "{{ 999999999999999999999999999999999|ans_random|hash('sha256')|truncate(32, True, '') }}"
     
 service_role_key:
     type: str
     help: What is your SERVICE ROLE KEY, press enter to regenerate it?
     secret: true
-    default: "{{ uuid4().hex }}.{{ uuid4().hex }}.{{ uuid4().hex }}"
+    default: "{{ 999999999999999999999999999999999|ans_random|hash('sha256')|truncate(32, True, '') }}"
     
 dashboard_username:
     type: str
@@ -225,13 +225,13 @@ secret_key_base:
     type: str
     help: What is your SECRET KEY BASE, press enter to regenerate it?
     secret: true
-    default: "{{ uuid4().hex }}.{{ uuid4().hex }}.{{ uuid4().hex }}"
+    default: "{{ 999999999999999999999999999999999|ans_random|hash('sha256')|truncate(32, True, '') }}"
     
 vault_enc_key:
     type: str
     help: What is your VAULT ENC KEY, press enter to regenerate it?
     secret: true
-    default: "{{ uuid4().hex }}.{{ uuid4().hex }}.{{ uuid4().hex }}"
+    default: "{{ 999999999999999999999999999999999|ans_random|hash('sha256')|truncate(32, True, '') }}"
 
 do_you_use_openai_service:
   type: bool
