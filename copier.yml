@@ -229,26 +229,40 @@ vault_enc_key:
     secret: true
     default: "{{ 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999|ans_random|hash('sha256')|urlencode }}"
 
+do_you_use_openai_service:
+  type: bool
+  default: "yes"
+  help: "Do you use OPENAI service?"
+  
 openai_api_key:
     type: str
+    when: "{{ not do_you_use_openai_service }}"
     help: What is your OPENAI API KEY?
     secret: true
     default: ""
     
+do_you_use_logflares_service:
+  type: bool
+  default: "yes"
+  help: "Do you use logflare service?"
+      
 logflare_logger_backend_api_key:
     type: str
+    when: "{{ not do_you_use_logflares_service }}"
     help: What is your LOGFLARE LOGGER BACKEND API KEY?
     secret: true
     default: ""  
     
 logflare_logger_backend_api_key:
     type: str
+    when: "{{ not do_you_use_logflares_service }}"
     help: What is your LOGFLARE LOGGER BACKEND API KEY?
     secret: true
     default: "" 
     
 logflare_api_key:
     type: str
+    when: "{{ not do_you_use_logflares_service }}"
     help: What is your LOGFLARE API KEY?
     secret: true
     default: "" 
