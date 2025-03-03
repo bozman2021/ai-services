@@ -111,7 +111,7 @@ qdrant-import_service_name:
     help: What is the qdrant service name?
     default: qdrant
 
-    
+#----- Supabase installation -----    
     
 accept_supa_name_defaults:
   type: bool
@@ -129,6 +129,28 @@ kong_service_name:
     when: "{{ not accept_supa_name_defaults }}"
     help: What is the supabase-kong service name?
     default: kong
+
+
+
+
+    
+auth_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-auth service name?
+    default: auth
+    
+rest_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-rest service name?
+    default: rest
+    
+realtime_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-realtime service name?
+    default: realtime
 
 
 
