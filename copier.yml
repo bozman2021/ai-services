@@ -184,7 +184,7 @@ db_service_name:
 
 postgress_password:
   type: str
-  default: ""
+  default: "{{ postgress_password }}"
   help: "What is your POSTGRES PASSWORD, press enter to regenerate it"
     
 jwt_secret:
