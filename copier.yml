@@ -32,7 +32,7 @@ domain_name:
 
 accept_name_defaults:
   type: bool
-  default: False
+  default: yes
   help: "Do you want to accept all default for service name settings?"
   
 n8n_service_name:
@@ -74,7 +74,7 @@ qdrant-import_service_name:
 #---- Supabase -----
 accept_supa_name_defaults:
   type: bool
-  default: False
+  default: yes
   help: "Do you want to accept all default for SUPABASE service name settings?"
   
 studio_service_name:
