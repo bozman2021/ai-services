@@ -41,7 +41,7 @@ cd $STACK_DIR
 **Create a Data Directory for cloudflared**
 
 ````
-mkdir -p ./data/flowise ./data/n8n/backup ./data/n8n/backup ./data/postgres_storage ./data/n8n/backup ./data/shared ./data/qdrant_storage ./data/kong/api ./data/supabase/imageproxy/storage ./data/supabase/vector/volumes/logs ./supabase/pooler/volumes
+mkdir -p ./data/flowise ./data/n8n/backup ./data/n8n/backup ./data/postgres_storage ./data/n8n/backup ./data/shared ./data/qdrant_storage ./data/kong/api ./data/supabase/imageproxy/storage ./data/supabase/vector/logs ./supabase/pooler ./supabase/storage ./supabase/edge/functions
 ````
 
 **Create the Project from the Template**
