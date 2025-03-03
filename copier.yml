@@ -186,25 +186,25 @@ postgress_password:
     type: str
     help: What is your POSTGRES PASSWORD, press enter to regenerate it?
     secret: true
-    default: "{{ 9999999999|ans_random|hash('sha256')|urlencode }}"
+    default: "{{ secrets.token_urlsafe(16) }}"
     
 jwt_secret:
     type: str
     help: What is your JWT SECRET, press enter to regenerate it?
     secret: true
-    default: "{{ 99999999999999999999999999999999999999999999999999999999999999999999999999999999999|ans_random|hash('sha256')|urlencode }}"
+    default: "{{ uuid4().hex }}.{{ uuid4().hex }}.{{ uuid4().hex }}"
 
 anon_key:
     type: str
     help: What is your ANON KEY, press enter to regenerate it?
     secret: true
-    default: "{{ 99999999999999999999999999999999999999999999999999999999999999999999999999999999999|ans_random|hash('sha256')|urlencode }}"
+    default: "{{ uuid4().hex }}.{{ uuid4().hex }}.{{ uuid4().hex }}"
     
 service_role_key:
     type: str
     help: What is your SERVICE ROLE KEY, press enter to regenerate it?
     secret: true
-    default: "{{ 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999|ans_random|hash('sha256')|urlencode }}"
+    default: "{{ uuid4().hex }}.{{ uuid4().hex }}.{{ uuid4().hex }}"
     
 dashboard_username:
     type: str
@@ -215,19 +215,19 @@ dashboard_password:
     type: str
     help: What is your Supabase Username password, press enter to regenerate it?
     secret: true
-    default: "{{ 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999|ans_random|hash('sha256')|urlencode }}"
+    default: "{{ secrets.token_urlsafe(16) }}"
 
 secret_key_base:
     type: str
     help: What is your SECRET KEY BASE, press enter to regenerate it?
     secret: true
-    default: "{{ 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999|ans_random|hash('sha256')|urlencode }}"
+    default: "{{ uuid4().hex }}.{{ uuid4().hex }}.{{ uuid4().hex }}"
     
 vault_enc_key:
     type: str
     help: What is your VAULT ENC KEY, press enter to regenerate it?
     secret: true
-    default: "{{ 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999|ans_random|hash('sha256')|urlencode }}"
+    default: "{{ uuid4().hex }}.{{ uuid4().hex }}.{{ uuid4().hex }}"
 
 do_you_use_openai_service:
   type: bool
