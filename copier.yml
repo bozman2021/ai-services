@@ -113,7 +113,7 @@ postgres_service_name:
     help: What is the postgres for N8N service name?
     default: db_n8n
 
-qdrant-import_service_name:
+qdrant_import_service_name:
     type: str
     when: "{{ not accept_name_defaults }}"
     help: What is the qdrant service name?
