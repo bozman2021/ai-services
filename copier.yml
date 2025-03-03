@@ -48,8 +48,6 @@ _exclude:
 #      valid_prefix = 0 <= int(parts[1]) <= 32 if parts else False;
 #      match and valid_ip and valid_prefix or "Invalid CIDR format. Use e.g., 192.168.1.0/24"
     
-
-
 data_dir:
     type: str
     help: Where should the data be stored?
@@ -81,17 +79,17 @@ n8n_service_name:
     help: What is the n8n service name?
     default: n8n
     
-x-n8n_service_name:
+x_n8n_service_name:
     type: str
     when: "{{ accept_name_defaults and false }}"
     help: What is the x-n8n service name?
-    default: x-n8n
+    default: x_n8n
 
-n8n-import_service_name:
+n8n_import_service_name:
     type: str
     when: "{{ not accept_name_defaults }}"
     help: What is the n8n-import service name?
-    default: n8n-import
+    default: n8n_import
 
 flowise_service_name:
     type: str
@@ -129,10 +127,6 @@ kong_service_name:
     when: "{{ not accept_supa_name_defaults }}"
     help: What is the supabase-kong service name?
     default: kong
-
-
-
-
     
 auth_service_name:
     type: str
