@@ -14,6 +14,7 @@ questions:
       match and valid_ip and valid_prefix or "Invalid CIDR format. Use e.g., 192.168.1.0/24"
 
 
+
 data_dir:
     type: str
     help: Where should the data be stored?
@@ -29,80 +30,104 @@ domain_name:
     default: "askboz.se"
     help: On which domain do you want to publish the services?
 
+accept_name_defaults:
+  type: bool
+  default: False
+  help: "Do you want to accept all default for service name settings?"
+  
 n8n_service_name:
     type: str
+    when: "{{ not accept_name_defaults }}"
     help: What is the n8n service name?
     default: n8n
     
 x-n8n_service_name:
     type: str
+    when: "{{ not accept_name_defaults }}"
     help: What is the x-n8n service name?
     default: x-n8n
 
 n8n-import_service_name:
     type: str
+    when: "{{ not accept_name_defaults }}"
     help: What is the n8n-import service name?
     default: n8n-import
 
 flowise_service_name:
     type: str
+    when: "{{ not accept_name_defaults }}"
     help: What is the flowise service name?
     default: flowise
 
 postgres_service_name:
     type: str
+    when: "{{ not accept_name_defaults }}"
     help: What is the postgres for N8N service name?
     default: db_n8n
 
 qdrant-import_service_name:
     type: str
+    when: "{{ not accept_name_defaults }}"
     help: What is the qdrant service name?
     default: qdrant
     
 #---- Supabase -----
-
+accept_supa_name_defaults:
+  type: bool
+  default: False
+  help: "Do you want to accept all default for SUPABASE service name settings?"
+  
 studio_service_name:
     type: str
+    when: "{{ not accept_supa_name_defaults }}"
     help: What is the supabase-studio service name?
     default: studio
     
 kong_service_name:
     type: str
+    when: "{{ not accept_supa_name_defaults }}"
     help: What is the supabase-kong service name?
     default: kong
     
 auth_service_name:
     type: str
+    when: "{{ not accept_supa_name_defaults }}"
     help: What is the supabase-auth service name?
     default: auth
     
 rest_service_name:
     type: str
+    when: "{{ not accept_supa_name_defaults }}"
     help: What is the supabase-rest service name?
     default: rest
     
 realtime_service_name:
     type: str
+    when: "{{ not accept_supa_name_defaults }}"
     help: What is the supabase-realtime service name?
     default: realtime
 
 imgproxy_service_name:
     type: str
+    when: "{{ not accept_supa_name_defaults }}"
     help: What is the supabase-imgproxy service name?
     default: imgproxy
 
 meta_service_name:
     type: str
+    when: "{{ not accept_supa_name_defaults }}"
     help: What is the supabase-meta service name?
     default: meta
     
 analytics_service_name:
     type: str
+    when: "{{ not accept_supa_name_defaults }}"
     help: What is the supabase-analytics service name?
     default: analytics
 
  db_service_name:
     type: str
+    when: "{{ not accept_supa_name_defaults }}"
     help: What is the supabase-db service name?
     default: db_supa
 
