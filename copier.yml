@@ -236,7 +236,7 @@ do_you_use_openai_service:
   
 openai_api_key:
     type: str
-    when: "{{ not do_you_use_openai_service }}"
+    when: "{{ do_you_use_openai_service }}"
     help: What is your OPENAI API KEY?
     secret: true
     default: ""
@@ -248,14 +248,14 @@ do_you_use_logflares_service:
       
 logflare_logger_backend_api_key:
     type: str
-    when: "{{ not do_you_use_logflares_service }}"
+    when: "{{ do_you_use_logflares_service }}"
     help: What is your LOGFLARE LOGGER BACKEND API KEY?
     secret: true
     default: ""  
     
 logflare_api_key:
     type: str
-    when: "{{ not do_you_use_logflares_service }}"
+    when: "{{ do_you_use_logflares_service }}"
     help: What is your LOGFLARE API KEY?
     secret: true
     default: "" 
