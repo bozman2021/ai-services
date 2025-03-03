@@ -169,7 +169,9 @@ analytics_service_name:
     when: "{{ not accept_supa_name_defaults }}"
     help: What is the supabase-analytics service name?
     default: analytics
-
-
-
-
+    
+analytics_service_name1:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-analytics service name?
+    default: analytics1
