@@ -189,13 +189,8 @@ db_service_name:
   
 postgress_password:
   type: str
-  default: "{{ postgress_password }}"  # Uses the generated password from the hook
+  default: "{{ 999999999999999999999999999999999|ans_random|hash('sha512')|regex_replace('[^A-Za-z0-9]', '')|truncate(12, True, '') }}"
   help: "Generated PostgreSQL password"
-
-random_uuid:
-  type: str
-  default: "{{ random_uuid }}"  # Uses the injected UUID from the hook
-  help: "Generated random UUID"
   
 jwt_secret:
     type: str
