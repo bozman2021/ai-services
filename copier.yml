@@ -93,6 +93,23 @@ n8n-import_service_name:
     help: What is the n8n-import service name?
     default: n8n-import
 
+flowise_service_name:
+    type: str
+    when: "{{ not accept_name_defaults }}"
+    help: What is the flowise service name?
+    default: flowise
+
+postgres_service_name:
+    type: str
+    when: "{{ not accept_name_defaults }}"
+    help: What is the postgres for N8N service name?
+    default: db_n8n
+
+qdrant-import_service_name:
+    type: str
+    when: "{{ not accept_name_defaults }}"
+    help: What is the qdrant service name?
+    default: qdrant
 
 
 
