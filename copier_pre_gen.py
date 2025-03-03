@@ -1,6 +1,6 @@
 import secrets
 import string
-import uuid
+import uuid4
 
 def generate_password(length=16):
     characters = string.ascii_letters + string.digits + string.punctuation
