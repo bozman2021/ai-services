@@ -1,4 +1,4 @@
-#version: "v0.0.65"
+#version: "v0.0.66"
 # Usage
 #   Start:              docker compose up
 #   With helpers:       docker compose -f docker-compose.yml -f ./dev/docker-compose.dev.yml up
@@ -65,12 +65,12 @@ services:
       container_name: {{postgres_service_name}}
       image: postgres:16-alpine 
       restart: unless-stopped
-      ports:
-        - "5432:5432"
       environment:
         - POSTGRES_USER
         - POSTGRES_PASSWORD
         - POSTGRES_DB
+      ports:
+          - "5432:5432"
       volumes:
         - ${DATA_DIR-./data}/postgres_storage:/var/lib/postgresql/data
       healthcheck:
