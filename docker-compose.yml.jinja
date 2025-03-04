@@ -58,7 +58,7 @@ services:
       entrypoint: /bin/sh -c "sleep 3; flowise start"
       networks:
         {{network_name}}:
-           ipv4_address: 192.168.23.40
+          ipv4_address: 192.168.23.40
         
   #--- PostgreSQL ---
   {{postgres_service_name}}:
@@ -80,7 +80,7 @@ services:
           retries: 10
        networks:
          {{network_name}}:
-            ipv4_address: 192.168.23.50
+           ipv4_address: 192.168.23.50
 
     #--- N8N-import ---
     {{n8n_import_service_name}}:
@@ -93,7 +93,7 @@ services:
         volumes:
            - ${DATA_DIR-./data}/n8n/backup:/backup
         depends_on:
-          postgres:
+          {{postgres_service_name}}:
             condition: service_healthy
         
   #--- N8N ---
@@ -108,13 +108,13 @@ services:
           - ${DATA_DIR-./data}/n8n/backup:/backup
           - ${DATA_DIR-./data}/shared:/data/shared
        depends_on:
-       postgres:
-          condition: service_healthy
-       n8n-import:
-          condition: service_completed_successfully
+         {{postgres_service_name}}:
+            condition: service_healthy
+         {{n8n_import_service_name}}:
+            condition: service_completed_successfully
       networks:
         {{network_name}}:
-           ipv4_address: 192.168.23.55
+          ipv4_address: 192.168.23.55
 
   #--- QDRANT ---
   {{qdrant_import_service_name}}:
@@ -126,8 +126,8 @@ services:
       volumes:
          - ${DATA_DIR-./data}/qdrant_storage:/qdrant/storage
       networks:
-         - {{network_name}}:
-             ipv4_address: 192.168.23.55
+         {{network_name}}:
+           ipv4_address: 192.168.23.55
 
 
  #------------------------------
@@ -219,11 +219,11 @@ services:
         interval: 5s
         retries: 3
       depends_on:
+         # Disable this if you are using an external Postgres database
         {{db_service_name}}:
-          # Disable this if you are using an external Postgres database
           condition: service_healthy
-       {{analytics_service_name}}:
-         condition: service_healthy
+        {{analytics_service_name}}:
+          condition: service_healthy
       environment:
         GOTRUE_API_HOST: 0.0.0.0
         GOTRUE_API_PORT: 9999
@@ -277,8 +277,8 @@ services:
       image: postgrest/postgrest:v12.2.8
       restart: unless-stopped
       depends_on:
+         # Disable this if you are using an external Postgres database
         {{db_service_name}}:
-          # Disable this if you are using an external Postgres database
           condition: service_healthy
         {{analytics_service_name}}:
           condition: service_healthy
@@ -301,8 +301,8 @@ services:
     image: supabase/realtime:v2.34.31
     restart: unless-stopped
     depends_on:
+      # Disable this if you are using an external Postgres database
       {{db_service_name}}:
-        # Disable this if you are using an external Postgres database
         condition: service_healthy
       {{analytics_service_name}}:
         condition: service_healthy
