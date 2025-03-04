@@ -123,13 +123,7 @@ postgress_n8n_password:
     type: str
     when: "{{ not accept_name_defaults }}"
     help: What is the password for N8N postgres?
-    default: >-
-      {{
-        999999999999999999999999999999999 | ans_random | hash('sha512') |
-        hash('sha512') | hash('sha512') |
-        regex_replace('[^A-Za-z0-9!@#$%^&*()_+=?.?-]', '') |
-        truncate(12 + (999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:2] | int % 101), True, '')
-      }}
+    default: "Aik"
 
 postgres_n8n_db:
     type: str
