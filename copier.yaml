@@ -196,7 +196,6 @@ jwt_secret:
     type: str
     help: What is your JWT SECRET, press enter to regenerate it?
     secret: true
-    default: fake_jwt:
     default: >-
       {{
         999999999999999999999999999999999 | ans_random | hash('sha256') | upper | regex_replace('[^A-Z0-9]', '-') | truncate(20, True, '') | regex_replace('(.{5})', '\\1.') }}.{{ 
