@@ -189,8 +189,15 @@ db_service_name:
   
 postgress_password:
   type: str
-  default: "{{ 999999999999999999999999999999999|ans_random|hash('sha512')|regex_replace('[^A-Za-z0-9.]', '-') |truncate(12, True, '') | regex_replace('(.{4})', '\\1!') }}"
-  help: "Generated PostgreSQL password"
+  help: "Generated PostgreSQL password"      
+  default: >-
+      {{
+        999999999999999999999999999999999 |
+        ans_random | hash('sha512') | hash('sha512') | hash('sha512') |
+        regex_replace('[^A-Za-z0-9!@#$%^&*()_+=?-]', '') |
+        truncate(12, True, '')
+      }}
+
   
 jwt_secret:
     type: str
@@ -198,30 +205,35 @@ jwt_secret:
     secret: true
     default: >-
       {{
-        999999999999999999999999999999999 | ans_random | hash('sha256') | upper | regex_replace('[^A-Z0-9]', '-') | truncate(20, True, '') | regex_replace('(.{5})', '\\1.') }}.{{ 
-        999999999999999999999999999999999 | ans_random | hash('sha256') | lower | regex_replace('[^a-z0-9]', '_') | truncate(50, True, '') | regex_replace('(.{10})', '\\1?') }}?{{ 
-        999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^A-Za-z0-9._-]', '-') | truncate(20, True, '') | regex_replace('(.{4})', '\\1_') }}
-
+        999999999999999999999999999999999 |
+        ans_random | hash('sha512') | hash('sha512') | hash('sha512') |
+        regex_replace('[^A-Za-z0-9!@#$%^&*()_+=?-]', '') |
+        truncate(300, True, '')
+      }}
 anon_key:
     type: str
     help: What is your ANON KEY, press enter to regenerate it?
     secret: true
     default: >-
       {{
-        999999999999999999999999999999999 | ans_random | hash('sha256') | upper | regex_replace('[^A-Z0-9]', '-') | truncate(20, True, '') | regex_replace('(.{5})', '\\1.') }}.{{ 
-        999999999999999999999999999999999 | ans_random | hash('sha256') | lower | regex_replace('[^a-z0-9]', '_') | truncate(50, True, '') | regex_replace('(.{10})', '\\1?') }}?{{ 
-        999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^A-Za-z0-9._-]', '-') | truncate(20, True, '') | regex_replace('(.{4})', '\\1_') }}
-    
+        999999999999999999999999999999999 |
+        ans_random | hash('sha512') | hash('sha512') | hash('sha512') |
+        regex_replace('[^A-Za-z0-9!@#$%^&*()_+=?-]', '') |
+        truncate(300, True, '')
+      }}
+      
 service_role_key:
     type: str
     help: What is your SERVICE ROLE KEY, press enter to regenerate it?
     secret: true
     default: >-
       {{
-        999999999999999999999999999999999 | ans_random | hash('sha256') | upper | regex_replace('[^A-Z0-9]', '-') | truncate(20, True, '') | regex_replace('(.{5})', '\\1.') }}.{{ 
-        999999999999999999999999999999999 | ans_random | hash('sha256') | lower | regex_replace('[^a-z0-9]', '_') | truncate(50, True, '') | regex_replace('(.{10})', '\\1?') }}?{{ 
-        999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^A-Za-z0-9._-]', '-') | truncate(20, True, '') | regex_replace('(.{4})', '\\1_') }}
-   
+        999999999999999999999999999999999 |
+        ans_random | hash('sha512') | hash('sha512') | hash('sha512') |
+        regex_replace('[^A-Za-z0-9!@#$%^&*()_+=?-]', '') |
+        truncate(300, True, '')
+      }}
+      
 dashboard_username:
     type: str
     help: What is your Supabase Username?
@@ -230,28 +242,40 @@ dashboard_username:
 dashboard_password:
     type: str
     secret: true
-    default: "{{ 999999999999999999999999999999999|ans_random|hash('sha512')|regex_replace('[^A-Za-z0-9]', '-') |truncate(12, True, '')| regex_replace('(.{4})', '\\1!') }}"
     help: What is your Supabase Username password, press enter to regenerate it?
+    default: >-
+      {{
+        999999999999999999999999999999999 |
+        ans_random | hash('sha512') | hash('sha512') | hash('sha512') |
+        regex_replace('[^A-Za-z0-9!@#$%^&*()_+=?-]', '') |
+        truncate(12, True, '')
+      }}
 
 secret_key_base:
     type: str
     help: What is your SECRET KEY BASE, press enter to regenerate it?
     secret: true
     default: >-
+    default: >-
       {{
-        999999999999999999999999999999999 | ans_random | hash('sha256') | upper | regex_replace('[^A-Z0-9]', '-') | truncate(20, True, '') | regex_replace('(.{5})', '\\1.') }}.{{ 
-        999999999999999999999999999999999 | ans_random | hash('sha256') | lower | regex_replace('[^a-z0-9]', '_') | truncate(50, True, '') | regex_replace('(.{10})', '\\1?') }}?{{ 
-        999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^A-Za-z0-9._-]', '-') | truncate(20, True, '') | regex_replace('(.{4})', '\\1?') }} 
-
+        999999999999999999999999999999999 |
+        ans_random | hash('sha512') | hash('sha512') | hash('sha512') |
+        regex_replace('[^A-Za-z0-9!@#$%^&*()_+=?-]', '') |
+        truncate(300, True, '')
+      }}
+      
 vault_enc_key:
     type: str
     help: What is your VAULT ENC KEY, press enter to regenerate it?
     secret: true
     default: >-
       {{
-        999999999999999999999999999999999 | ans_random | hash('sha256') | upper | regex_replace('[^A-Z0-9]', '-') | truncate(20, True, '') | regex_replace('(.{5})', '\\1.') }}.{{ 
-        999999999999999999999999999999999 | ans_random | hash('sha256') | lower | regex_replace('[^a-z0-9]', '_') | truncate(50, True, '') | regex_replace('(.{10})', '\\1?') }}?{{ 
-        999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^A-Za-z0-9._-]', '-') | truncate(20, True, '') | regex_replace('(.{4})', '\\1?') }}
+        999999999999999999999999999999999 |
+        ans_random | hash('sha512') | hash('sha512') | hash('sha512') |
+        regex_replace('[^A-Za-z0-9!@#$%^&*()_+=?-]', '') |
+        truncate(300, True, '')
+      }}
+
       
 do_you_use_openai_service:
   type: bool
