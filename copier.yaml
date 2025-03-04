@@ -189,7 +189,7 @@ db_service_name:
   
 postgress_password:
   type: str
-  default: "{{ 999999999999999999999999999999999|ans_random|hash('sha512')|regex_replace('[^A-Za-z0-9._-]', '-') |truncate(12, True, '') | regex_replace('(.{4})', '\\1?') }}"
+  default: "{{ 999999999999999999999999999999999|ans_random|hash('sha512')|regex_replace('[^A-Za-z0-9.]', '-') |truncate(12, True, '') | regex_replace('(.{4})', '\\1!') }}"
   help: "Generated PostgreSQL password"
   
 jwt_secret:
@@ -200,7 +200,7 @@ jwt_secret:
       {{
         999999999999999999999999999999999 | ans_random | hash('sha256') | upper | regex_replace('[^A-Z0-9]', '-') | truncate(20, True, '') | regex_replace('(.{5})', '\\1.') }}.{{ 
         999999999999999999999999999999999 | ans_random | hash('sha256') | lower | regex_replace('[^a-z0-9]', '_') | truncate(50, True, '') | regex_replace('(.{10})', '\\1?') }}?{{ 
-        999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^A-Za-z0-9._-]', '-') | truncate(20, True, '') | regex_replace('(.{4})', '\\1?') }}
+        999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^A-Za-z0-9._-]', '-') | truncate(20, True, '') | regex_replace('(.{4})', '\\1_') }}
 
 anon_key:
     type: str
@@ -210,7 +210,7 @@ anon_key:
       {{
         999999999999999999999999999999999 | ans_random | hash('sha256') | upper | regex_replace('[^A-Z0-9]', '-') | truncate(20, True, '') | regex_replace('(.{5})', '\\1.') }}.{{ 
         999999999999999999999999999999999 | ans_random | hash('sha256') | lower | regex_replace('[^a-z0-9]', '_') | truncate(50, True, '') | regex_replace('(.{10})', '\\1?') }}?{{ 
-        999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^A-Za-z0-9._-]', '-') | truncate(20, True, '') | regex_replace('(.{4})', '\\1?') }}
+        999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^A-Za-z0-9._-]', '-') | truncate(20, True, '') | regex_replace('(.{4})', '\\1_') }}
     
 service_role_key:
     type: str
@@ -220,7 +220,7 @@ service_role_key:
       {{
         999999999999999999999999999999999 | ans_random | hash('sha256') | upper | regex_replace('[^A-Z0-9]', '-') | truncate(20, True, '') | regex_replace('(.{5})', '\\1.') }}.{{ 
         999999999999999999999999999999999 | ans_random | hash('sha256') | lower | regex_replace('[^a-z0-9]', '_') | truncate(50, True, '') | regex_replace('(.{10})', '\\1?') }}?{{ 
-        999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^A-Za-z0-9._-]', '-') | truncate(20, True, '') | regex_replace('(.{4})', '\\1?') }}
+        999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^A-Za-z0-9._-]', '-') | truncate(20, True, '') | regex_replace('(.{4})', '\\1_') }}
    
 dashboard_username:
     type: str
@@ -230,7 +230,7 @@ dashboard_username:
 dashboard_password:
     type: str
     secret: true
-    default: "{{ 999999999999999999999999999999999|ans_random|hash('sha512')|regex_replace('[^A-Za-z0-9._-]', '-') |truncate(12, True, '') }}"
+    default: "{{ 999999999999999999999999999999999|ans_random|hash('sha512')|regex_replace('[^A-Za-z0-9]', '-') |truncate(12, True, '')| regex_replace('(.{4})', '\\1!') }}"
     help: What is your Supabase Username password, press enter to regenerate it?
 
 secret_key_base:
