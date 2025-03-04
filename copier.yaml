@@ -124,11 +124,7 @@ postgress_n8n_password:
     when: "{{ not accept_name_defaults }}"
     help: What is the password for N8N postgres?
     default: >-
-      {{
-        99999999 | ans_random | hash('sha512') |
-        regex_replace('[^A-Za-z0-9!@#$%^&*()_+=.-]', '') |
-        truncate(12 + (99 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:2] | int % 101), True)
-      }}
+      {{ 99999999 | ans_random | hash('sha256') | truncate(16, True) }}
 
 postgres_n8n_db:
     type: str
@@ -220,13 +216,8 @@ postgress_supabase_password:
   type: str
   help: What is your SUPABASE POSTGRES PASSWORD, press enter to regenerate it?
   default: >-
-     {{
-        99999999 | ans_random | hash('sha512') |
-        regex_replace('[^A-Za-z0-9!@#$%^&*()_+=.-]', '') |
-        truncate(12 + (99 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:2] | int % 101), True, '')
-      }}
+    {{ 99999999 | ans_random | hash('sha256') | truncate(16, True) }}
 
-  
 jwt_secret:
     type: str
     help: What is your JWT SECRET, press enter to regenerate it?
