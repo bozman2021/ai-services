@@ -162,6 +162,12 @@ imgproxy_service_name:
     help: What is the supabase-imgproxy service name?
     default: imgproxy
 
+storage_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-storage service name?
+    default: storage
+    
 meta_service_name:
     type: str
     when: "{{ not accept_supa_name_defaults }}"
