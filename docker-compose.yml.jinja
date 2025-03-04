@@ -220,7 +220,7 @@ services:
         retries: 3
       depends_on:
          # Disable this if you are using an external Postgres database
-        {{db_service_name}}:
+        {{postgres_supabase_db}}:
           condition: service_healthy
         {{analytics_service_name}}:
           condition: service_healthy
@@ -278,7 +278,7 @@ services:
       restart: unless-stopped
       depends_on:
          # Disable this if you are using an external Postgres database
-        {{db_service_name}}:
+        {{postgres_supabase_db}}:
           condition: service_healthy
         {{analytics_service_name}}:
           condition: service_healthy
@@ -302,7 +302,7 @@ services:
     restart: unless-stopped
     depends_on:
       # Disable this if you are using an external Postgres database
-      {{db_service_name}}:
+      {{postgres_supabase_db}}:
         condition: service_healthy
       {{analytics_service_name}}:
         condition: service_healthy
@@ -361,7 +361,7 @@ services:
         interval: 5s
         retries: 3
       depends_on:
-        {{db_service_name}}:
+        {{postgres_supabase_db}}:
           # Disable this if you are using an external Postgres database
           condition: service_healthy
         {{rest_service_name}}:
@@ -411,7 +411,7 @@ services:
       image: supabase/postgres-meta:v0.86.0
       restart: unless-stopped
       depends_on:
-        {{db_service_name}}:
+        {{postgres_supabase_db}}:
           # Disable this if you are using an external Postgres database
           condition: service_healthy
         {{analytics_service_name}}:
@@ -606,7 +606,7 @@ services:
         timeout: 5s
         retries: 5
       depends_on:
-        {{db_service_name}}:
+        {{postgres_supabase_db}}:
           condition: service_healthy
         {{analytics_service_name}}:
           condition: service_healthy
