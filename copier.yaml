@@ -225,12 +225,10 @@ jwt_secret:
     default: >-
       {{
         (
-          999999999999999999999999999999999 | ans_random | hash('sha512') |
-          hash('sha512') | hash('sha512') |
-          regex_replace('[0-9]', 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'[999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:1] | int % 52], 'g') |
-          regex_replace('[A-Za-z]', '0123456789!@#$%^&*()_+=?.-'[999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:1] | int % 21], 'g') |
-          truncate(250 + (999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:2] | int % 101), True, '')
+          999999999999999999999999999999999 | ans_random | hash('sha512') | hash('sha512') | hash('sha512')
         )
+        | regex_replace('[^A-Za-z0-9!@#$%^&*()_+=?.-]', '')
+        | truncate(250 + (999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:2] | int % 51), True, '')
       }}
       
 anon_key:
@@ -240,12 +238,10 @@ anon_key:
     default: >-
       {{
         (
-          999999999999999999999999999999999 | ans_random | hash('sha512') |
-          hash('sha512') | hash('sha512') |
-          regex_replace('[0-9]', 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'[999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:1] | int % 52], 'g') |
-          regex_replace('[A-Za-z]', '0123456789!@#$%^&*()_+=?.-'[999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:1] | int % 21], 'g') |
-          truncate(250 + (999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:2] | int % 101), True, '')
+          999999999999999999999999999999999 | ans_random | hash('sha512') | hash('sha512') | hash('sha512')
         )
+        | regex_replace('[^A-Za-z0-9!@#$%^&*()_+=?.-]', '')
+        | truncate(250 + (999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:2] | int % 51), True, '')
       }}
       
 service_role_key:
@@ -255,12 +251,10 @@ service_role_key:
     default: >-
       {{
         (
-          999999999999999999999999999999999 | ans_random | hash('sha512') |
-          hash('sha512') | hash('sha512') |
-          regex_replace('[0-9]', 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'[999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:1] | int % 52], 'g') |
-          regex_replace('[A-Za-z]', '0123456789!@#$%^&*()_+=?.-'[999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:1] | int % 21], 'g') |
-          truncate(250 + (999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:2] | int % 101), True, '')
+          999999999999999999999999999999999 | ans_random | hash('sha512') | hash('sha512') | hash('sha512')
         )
+        | regex_replace('[^A-Za-z0-9!@#$%^&*()_+=?.-]', '')
+        | truncate(250 + (999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:2] | int % 51), True, '')
       }}
       
 dashboard_username:
@@ -273,12 +267,7 @@ dashboard_password:
     secret: true
     help: What is your Supabase Username password, press enter to regenerate it?
     default: >-
-     {{
-        999999999999999999999999999999999 | ans_random | hash('sha512') |
-        hash('sha512') | hash('sha512') |
-        regex_replace('[^A-Za-z0-9!@#$%^&*()_+=?.?-]', '') |
-        truncate(12 + (999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:2] | int % 101), True, '')
-      }}
+      {{ 99999999 | ans_random | hash('sha256') | truncate(16, True) }}
 
 secret_key_base:
     type: str
@@ -287,12 +276,10 @@ secret_key_base:
     default: >-
       {{
         (
-          999999999999999999999999999999999 | ans_random | hash('sha512') |
-          hash('sha512') | hash('sha512') |
-          regex_replace('[0-9]', 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'[999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:1] | int % 52], 'g') |
-          regex_replace('[A-Za-z]', '0123456789!@#$%^&*()_+=?.-'[999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:1] | int % 21], 'g') |
-          truncate(250 + (999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:2] | int % 101), True, '')
+          999999999999999999999999999999999 | ans_random | hash('sha512') | hash('sha512') | hash('sha512')
         )
+        | regex_replace('[^A-Za-z0-9!@#$%^&*()_+=?.-]', '')
+        | truncate(250 + (999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:2] | int % 51), True, '')
       }}
       
 vault_enc_key:
@@ -302,12 +289,10 @@ vault_enc_key:
     default: >-
       {{
         (
-          999999999999999999999999999999999 | ans_random | hash('sha512') |
-          hash('sha512') | hash('sha512') |
-          regex_replace('[0-9]', 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'[999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:1] | int % 52], 'g') |
-          regex_replace('[A-Za-z]', '0123456789!@#$%^&*()_+=?.-'[999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:1] | int % 21], 'g') |
-          truncate(250 + (999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:2] | int % 101), True, '')
+          999999999999999999999999999999999 | ans_random | hash('sha512') | hash('sha512') | hash('sha512')
         )
+        | regex_replace('[^A-Za-z0-9!@#$%^&*()_+=?.-]', '')
+        | truncate(250 + (999999999999999999999999999999999 | ans_random | hash('sha256') | regex_replace('[^0-9]', '')[:2] | int % 51), True, '')
       }}
 
       
