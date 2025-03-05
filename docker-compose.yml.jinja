@@ -1,4 +1,4 @@
-networks:
+{{network_name}}:
   cloudl3net-ai2:
     driver: ipvlan
     driver_opts:
@@ -8,33 +8,27 @@ networks:
       config:
         - subnet: 192.168.23.0/24 # your networks subnet
         - subnet: 192.168.24.0/24 # your networks subnet
-    name: cloudl3net-ai2
+    name: {{network_name}}
 
-services:
+
 
   #--- X-N8N ---
-  x_n8n: &service-n8n
-    container_name: x_n8n
-    image: n8nio/n8n:latest
-    restart: unless-stopped
-    environment:
-      - DB_TYPE=postgresdb
-      - DB_POSTGRESDB_HOST=postgres
-      - DB_POSTGRESDB_USER=${POSTGRES_N8N_USER}
-      - DB_POSTGRESDB_PASSWORD=${POSTGRES_N8N_PASSWORD}
-      - N8N_DIAGNOSTICS_ENABLED=false
-      - N8N_PERSONALIZATION_ENABLED=false
-      - N8N_ENCRYPTION_KEY
-      - N8N_USER_MANAGEMENT_JWT_SECRET
-    links:
-      - postgres
-    networks:
-      cloudl3net-ai2:
-        ipv4_address: 192.168.23.30
-  
+{{x_n8n_service_name}}: &service-n8n
+  image: n8nio/n8n:latest
+  environment:
+    - DB_TYPE=postgresdb
+    - DB_POSTGRESDB_HOST=postgres
+    - DB_POSTGRESDB_USER=${POSTGRES_N8N_USER}
+    - DB_POSTGRESDB_PASSWORD=${POSTGRES_N8N_PASSWORD}
+    - N8N_DIAGNOSTICS_ENABLED=false
+    - N8N_PERSONALIZATION_ENABLED=false
+    - N8N_ENCRYPTION_KEY
+    - N8N_USER_MANAGEMENT_JWT_SECRET
+      
+services:
   #--- Flowise ---
-  flowise:
-    container_name: flowise
+  {{flowise_service_name}}:
+    container_name: {{flowise_service_name}}
     image: flowiseai/flowise
     restart: unless-stopped
     environment:
@@ -51,12 +45,12 @@ services:
         ipv4_address: 192.168.23.40
         
   #--- PostgreSQL ---
-  db_n8n:
-    container_name: db_n8n
+  {{postgres_n8n_service_name}}:
+    container_name: {{postgres_n8n_service_name}}
     image: postgres:16-alpine 
     restart: unless-stopped
     environment:
-      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_HOST=${POSTGRES_N8N_HOST}
       - DB_POSTGRESDB_USER=${POSTGRES_N8N_USER}
       - DB_POSTGRESDB_PASSWORD=${POSTGRES_N8N_PASSWORD}
     ports:
@@ -72,24 +66,24 @@ services:
       cloudl3net-ai2:
         ipv4_address: 192.168.23.50
 
-    #--- N8N-import ---
-    n8n_import:
-      <<: *service-n8n
-      container_name: n8n_import
-      entrypoint: /bin/sh
-      command:
-        - "-c"
-        - "n8n import:credentials --separate --input=/backup/credentials && n8n import:workflow --separate --input=/backup/workflows"
-      volumes:
-        - ${DATA_DIR-./data}/n8n/backup:/backup
-      depends_on:
-        db_n8n:
-          condition: service_healthy
+  #--- N8N-import ---
+  {{n8n_import_service_name}}:
+    <<: *service-n8n
+    container_name: {{n8n_import_service_name}}
+    entrypoint: /bin/sh
+    command:
+      - "-c"
+      - "n8n import:credentials --separate --input=/backup/credentials && n8n import:workflow --separate --input=/backup/workflows"
+    volumes:
+      - ${DATA_DIR-./data}/n8n/backup:/backup
+    depends_on:
+      {{postgres_n8n_service_name}}:
+        condition: service_healthy
         
   #--- N8N ---
-  n8n:
+  {{n8n_service_name}}:
     <<: *service-n8n
-    container_name: n8n
+    container_name: {{n8n_service_name}}
     restart: unless-stopped
     ports:
       - "5678:5678"
@@ -98,17 +92,17 @@ services:
       - ${DATA_DIR-./data}/n8n/backup:/backup
       - ${DATA_DIR-./data}/shared:/data/shared
     depends_on:
-      db_n8n:
+      {{postgres_n8n_service_name}}:
         condition: service_healthy
-      n8n_import:
+      {{n8n_import_service_name}}:
         condition: service_completed_successfully
     networks:
-      cloudl3net-ai2:
+      {{network_name}}:
         ipv4_address: 192.168.23.55
 
   #--- QDRANT ---
-  qdrant:
-    container_name: qdrant
+  {{qdrant_import_service_name}}:
+    container_name: {{qdrant_import_service_name}}
     image: qdrant/qdrant
     restart: unless-stopped
     ports:
@@ -116,11 +110,11 @@ services:
     volumes:
       - ${DATA_DIR-./data}/qdrant_storage:/qdrant/storage
     networks:
-      cloudl3net-ai2:
+      {{network_name}}:
         ipv4_address: 192.168.23.55
  
-  studio:
-    container_name: supabase-studio
+  {{studio_service_name}}:
+    container_name: supabase-{{studio_service_name}}
     image: supabase/studio:20250224-d10db0f
     restart: unless-stopped
     healthcheck:
@@ -129,29 +123,29 @@ services:
       interval: 5s
       retries: 3
     depends_on:
-      analytics:
+      {{analytics_service_name}}:
         condition: service_healthy
-      environment:
-        STUDIO_PG_META_URL: http://meta:8080
-        POSTGRES_PASSWORD: ${POSTGRES_SUPA_BASE_PASSWORD}
-        DEFAULT_ORGANIZATION_NAME: ${STUDIO_DEFAULT_ORGANIZATION}
-        DEFAULT_PROJECT_NAME: ${STUDIO_DEFAULT_PROJECT}
-        OPENAI_API_KEY: ${OPENAI_API_KEY:-}
-        SUPABASE_URL: http://kong:8000
-        SUPABASE_PUBLIC_URL: ${SUPABASE_PUBLIC_URL}
-        SUPABASE_ANON_KEY: ${ANON_KEY}
-        SUPABASE_SERVICE_KEY: ${SERVICE_ROLE_KEY}
-        AUTH_JWT_SECRET: ${JWT_SECRET}
-        LOGFLARE_API_KEY: ${LOGFLARE_API_KEY}
-        LOGFLARE_URL: http://analytics:4000
-        NEXT_PUBLIC_ENABLE_LOGS: true
-        # Comment to use Big Query backend for analytics
-        NEXT_ANALYTICS_BACKEND_PROVIDER: postgres
-        # Uncomment to use Big Query backend for analytics
-        # NEXT_ANALYTICS_BACKEND_PROVIDER: bigquery
+    environment:
+      STUDIO_PG_META_URL: http://meta:8080
+      POSTGRES_PASSWORD: ${POSTGRES_SUPABASE_PASSWORD}
+      DEFAULT_ORGANIZATION_NAME: ${STUDIO_DEFAULT_ORGANIZATION}
+      DEFAULT_PROJECT_NAME: ${STUDIO_DEFAULT_PROJECT}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      SUPABASE_URL: http://{{kong_service_name}}:${KONG_HTTP_PORT}
+      SUPABASE_PUBLIC_URL: ${SUPABASE_PUBLIC_URL}
+      SUPABASE_ANON_KEY: ${ANON_KEY}
+      SUPABASE_SERVICE_KEY: ${SERVICE_ROLE_KEY}
+      AUTH_JWT_SECRET: ${JWT_SECRET}
+      LOGFLARE_API_KEY: ${LOGFLARE_API_KEY}
+      LOGFLARE_URL: http://{{analytics_service_name}}:4000
+      NEXT_PUBLIC_ENABLE_LOGS: true
+      # Comment to use Big Query backend for analytics
+      NEXT_ANALYTICS_BACKEND_PROVIDER: ${POSTGRES_SUPABASE_DB}
+      # Uncomment to use Big Query backend for analytics
+      # NEXT_ANALYTICS_BACKEND_PROVIDER: bigquery
 
-  kong:
-    container_name: supabase-kong
+  {{kong_service_name}}:
+    container_name: supabase-{{kong_service_name}}
     image: kong:2.8.1
     restart: unless-stopped
     ports:
@@ -161,7 +155,7 @@ services:
       # https://github.com/supabase/supabase/issues/12661
       - ${DATA_DIR-./data}/kong/api/kong.yml:/home/kong/temp.yml:ro
     depends_on:
-      analytics:
+      {{analytics_service_name}}:
         condition: service_healthy
     environment:
       KONG_DATABASE: "off"
@@ -178,8 +172,8 @@ services:
       # https://unix.stackexchange.com/a/294837
     entrypoint: bash -c 'eval "echo \"$$(cat ~/temp.yml)\"" > ~/kong.yml && /docker-entrypoint.sh kong docker-start'
 
-  auth:
-    container_name: supabase-auth
+  {{auth_service_name}}:
+    container_name: supabase-{{auth_service_name}}
     image: supabase/gotrue:v2.169.0
     restart: unless-stopped
     healthcheck:
@@ -197,16 +191,16 @@ services:
       retries: 3
     depends_on:
       # Disable this if you are using an external Postgres  
-      db:
+      {{postgres_supabase_db}}:
         condition: service_healthy
-      analytics:
+      {{analytics_service_name}}:
         condition: service_healthy
     environment:
       GOTRUE_API_HOST: 0.0.0.0
       GOTRUE_API_PORT: 9999
       API_EXTERNAL_URL: ${API_EXTERNAL_URL}
       GOTRUE_DB_DRIVER: postgres
-      GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+      GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:${POSTGRES_SUPABASE_PASSWORD}@${POSTGRES_SUPABASE_HOST}:${POSTGRES_SUPABASE_PORT}/${POSTGRES_SUPABASE_DB}
       GOTRUE_SITE_URL: ${SITE_URL}
       GOTRUE_URI_ALLOW_LIST: ${ADDITIONAL_REDIRECT_URLS}
       GOTRUE_DISABLE_SIGNUP: ${DISABLE_SIGNUP}
@@ -249,18 +243,18 @@ services:
       # GOTRUE_HOOK_SEND_EMAIL_URI: "http://host.docker.internal:54321/functions/v1/email_sender"
       # GOTRUE_HOOK_SEND_EMAIL_SECRETS: "v1,whsec_VGhpcyBpcyBhbiBleGFtcGxlIG9mIGEgc2hvcnRlciBCYXNlNjQgc3RyaW5n"
 
-  rest:
-    container_name: supabase-rest
+  {{rest_service_name}}:
+    container_name: supabase-{{rest_service_name}}
     image: postgrest/postgrest:v12.2.8
     restart: unless-stopped
     depends_on:
       # Disable this if you are using an external Postgres database
-      db:
+      {{postgres_supabase_db}}:
         condition: service_healthy
-      analytics:
+      {{analytics_service_name}}:
         condition: service_healthy
     environment:
-      PGRST_DB_URI: postgres://authenticator:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+      PGRST_DB_URI: postgres://authenticator:${POSTGRES_SUPABASE_PASSWORD}@${POSTGRES_SUPABASE_HOST}:${POSTGRES_SUPABASE_PORT}/${POSTGRES_SUPABASE_DB}
       PGRST_DB_SCHEMAS: ${PGRST_DB_SCHEMAS}
       PGRST_DB_ANON_ROLE: anon
       PGRST_JWT_SECRET: ${JWT_SECRET}
@@ -272,16 +266,15 @@ services:
         "postgrest"
       ]
 
-  realtime:
+  {{realtime_service_name}}:
     # This container name looks inconsistent but is correct because realtime constructs tenant id by parsing the subdomain
-    container_name: realtime-dev.supabase-realtime
-    image: supabase/realtime:v2.34.31
+    container_name: realtime-dev.supabase-{{realtime_service_name}}
     restart: unless-stopped
     depends_on:
       # Disable this if you are using an external Postgres database
-      db:
+      {{postgres_supabase_db}}:
         condition: service_healthy
-      analytics:
+      {{analytics_service_name}}:
         condition: service_healthy
     healthcheck:
       test:
@@ -301,11 +294,11 @@ services:
       retries: 3
     environment:
       PORT: 4000
-      DB_HOST: ${POSTGRES_HOST}
-      DB_PORT: ${POSTGRES_PORT}
+      DB_HOST: ${POSTGRES_SUPABASE_HOST}
+      DB_PORT: ${POSTGRES_SUPABASE_PORT}
       DB_USER: supabase_admin
-      DB_PASSWORD: ${POSTGRES_PASSWORD}
-      DB_NAME: ${POSTGRES_DB}
+      DB_PASSWORD: ${POSTGRES_SUPABASE_PASSWORD}
+      DB_NAME: ${POSTGRES_SUPABASE_DB}
       DB_AFTER_CONNECT_QUERY: 'SET search_path TO _realtime'
       DB_ENC_KEY: supabaserealtime
       API_JWT_SECRET: ${JWT_SECRET}
@@ -318,8 +311,8 @@ services:
       RUN_JANITOR: true
 
   # Tod use S3 backed storage: docker compose -f docker-compose.yml -f docker-compose.s3.yml up
-  storage:
-    container_name: supabase-storage
+  {{storage_service_name}}:
+    container_name: supabase-{{storage_service_name}}
     image: supabase/storage-api:v1.19.1
     restart: unless-stopped
     volumes:
@@ -330,19 +323,19 @@ services:
       interval: 5s
       retries: 3
     depends_on:
-      db:
+      {{postgres_supabase_db}}:
         # Disable this if you are using an external Postgres database
         condition: service_healthy
-      rest:
+      {{rest_service_name}}:
         condition: service_started
-      imgproxy:
+      {{imgproxy_service_name}}:
           condition: service_started
     environment:
       ANON_KEY: ${ANON_KEY}
       SERVICE_KEY: ${SERVICE_ROLE_KEY}
       POSTGREST_URL: http://rest:3000
       PGRST_JWT_SECRET: ${JWT_SECRET}
-      DATABASE_URL: postgres://supabase_storage_admin:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${cat .enc}
+      DATABASE_URL: postgres://supabase_storage_admin:${POSTGRES_SUPABASE_PASSWORD}@${POSTGRES_SUPABASE_HOST}:${POSTGRES_SUPABASE_PORT}/$${cat .enc}
       FILE_SIZE_LIMIT: 52428800
       STORAGE_BACKEND: file
       FILE_STORAGE_BACKEND_PATH: /var/lib/storage
@@ -351,10 +344,10 @@ services:
       REGION: stub
       GLOBAL_S3_BUCKET: stub
       ENABLE_IMAGE_TRANSFORMATION: "true"
-      IMGPROXY_URL: http://imgproxy:5001
+      IMGPROXY_URL: http://{{imgproxy_service_name}}:5001
 
-  imgproxy:
-    container_name: supabase-imgproxy
+  {{imgproxy_service_name}}:
+    container_name: supabase-{{imgproxy_service_name}}
     image: darthsim/imgproxy:v3.8.0
     restart: unless-stopped
     volumes:
@@ -370,26 +363,26 @@ services:
       IMGPROXY_USE_ETAG: "true"
       IMGPROXY_ENABLE_WEBP_DETECTION: ${IMGPROXY_ENABLE_WEBP_DETECTION}
 
-  meta:
-    container_name: supabase-meta
+  {{meta_service_name}}:
+    container_name: supabase-{{meta_service_name}}
     image: supabase/postgres-meta:v0.86.0
     restart: unless-stopped
     depends_on:
-      db:
+      {{postgres_supabase_db}}:
         # Disable this if you are using an external Postgres database
         condition: service_healthy
-      analytics:
+      {{analytics_service_name}}:
         condition: service_healthy
     environment:
       PG_META_PORT: 8080
-      PG_META_DB_HOST: ${POSTGRES_HOST}
-      PG_META_DB_PORT: ${POSTGRES_PORT}
-      PG_META_DB_NAME: ${POSTGRES_DB}
+      PG_META_DB_HOST: ${POSTGRES_SUPABASE_HOST}
+      PG_META_DB_PORT: ${POSTGRES_SUPABASE_PORT}
+      PG_META_DB_NAME: ${POSTGRES_SUPABASE_DB}
       PG_META_DB_USER: supabase_admin
-      PG_META_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      PG_META_DB_PASSWORD: ${POSTGRES_SUPABASE_PASSWORD}
 
-  edge:
-    container_name: supabase-edge-
+  {{functions_edge_service_name}}:
+    container_name: supabase-edge-{{functions_edge_service_name}}
     image: supabase/edge-runtime:v1.67.2
     restart: unless-stopped
     volumes:
@@ -412,8 +405,8 @@ services:
        "/home/deno/functions/main"
       ]
 
-  analytics:
-    container_name: supabase-analytics
+  {{analytics_service_name}}:
+    container_name: supabase-{{analytics_service_name}}
     image: supabase/logflare:1.11.0
     restart: unless-stopped
     ports:
@@ -430,8 +423,8 @@ services:
       interval: 5s
       retries: 10
     depends_on:
-      db:
-      # Disable this if you are using an external Postgres database
+      {{postgres_supabase_db}}:
+       # Disable this if you are using an external Postgres database
        condition: service_healthy
     environment:
       LOGFLARE_NODE_HOST: 127.0.0.1
@@ -447,7 +440,7 @@ services:
       LOGFLARE_MIN_CLUSTER_SIZE: 1
 
       # Comment variables to use Big Query backend for analytics
-      POSTGRES_BACKEND_URL: postgresql://supabase_admin:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/_supabase
+      POSTGRES_BACKEND_URL: postgresql://supabase_admin:${POSTGRES_SUPABASE_PASSWORD}@${POSTGRES_SUPABASE_HOST}:${POSTGRES_SUPABASE_PORT}/_supabase
       POSTGRES_BACKEND_SCHEMA: _analytics
       LOGFLARE_FEATURE_FLAG_OVERRIDE: multibackend=true
       # Uncomment to use Big Query backend for analytics
@@ -455,7 +448,7 @@ services:
       # GOOGLE_PROJECT_NUMBER: ${GOOGLE_PROJECT_NUMBER}
 
   # Comment out everything below this point if you are using an external Postgres database
-  db:
+  {{postgres_supabase_db}}:
     container_name: supabase-db
     image: supabase/postgres:15.8.1.044
     restart: unless-stopped
@@ -483,7 +476,7 @@ services:
       timeout: 5s
       retries: 10
     depends_on:
-      vector :
+      {{vector_service_name}} :
         condition: service_healthy
     environment:
       POSTGRES_HOST: /var/run/postgresql
@@ -505,8 +498,8 @@ services:
         # prevents Realtime polling queries from appearing in logs 
       ]
 
-  vector:
-    container_name: supabase-vector
+  {{vector_service_name}}:
+    container_name: supabase-{{vector_service_name}}
     image: timberio/vector:0.28.1-alpine
     restart: unless-stopped
     volumes:
@@ -526,8 +519,8 @@ services:
       ]
 
   # Update the DATABASE_URL if you are using an external Postgres database
-  supabase:
-    container_name: supabase-pooler-supabase
+  {{supavisor_service_name}}:
+    container_name: supabase-pooler-{{supavisor_service_name}}
     image: supabase/supavisor:2.3.9
     restart: unless-stopped
     ports:
@@ -541,9 +534,9 @@ services:
       timeout: 5s
       retries: 5
     depends_on:
-      db:
+      {{postgres_supabase_db}}:
         condition: service_healthy
-      analytics:
+      {{analytics_service_name}}:
         condition: service_healthy
     environment:
       PORT: 4000
