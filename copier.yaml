@@ -242,6 +242,13 @@ postgress_supabase_password:
   default: >-
     {{ 99999999 | ans_random | hash('sha256') | truncate(16, True) }}
 
+postgres_supabase_user:
+   type: str
+   when: "{{ not accept_supa_name_defaults }}"
+   help: What is the supabase username?
+   default: postgres
+
+
 postgres_supabase_host:
     type: str
     when: "{{ not accept_name_defaults }}"
