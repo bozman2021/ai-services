@@ -181,23 +181,29 @@ realtime_service_name:
     help: What is the supabase-realtime service name?
     default: realtime
 
-imgproxy_service_name:
-    type: str
-    when: "{{ not accept_supa_name_defaults }}"
-    help: What is the supabase-imgproxy service name?
-    default: imgproxy
-
 storage_service_name:
     type: str
     when: "{{ not accept_supa_name_defaults }}"
     help: What is the supabase-storage service name?
     default: storage
+
+imgproxy_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-imgproxy service name?
+    default: imgproxy
     
 meta_service_name:
     type: str
     when: "{{ not accept_supa_name_defaults }}"
     help: What is the supabase-meta service name?
     default: meta
+
+functions_edge_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-edge-function service name?
+    default: functions
     
 analytics_service_name:
     type: str
@@ -210,6 +216,18 @@ postgres_supabase_db:
     when: "{{ not accept_supa_name_defaults }}"
     help: What is the supabase-db service name?
     default: db
+
+vector_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase-vector service name?
+    default: vector
+    
+supavisor_service_name:
+    type: str
+    when: "{{ not accept_supa_name_defaults }}"
+    help: What is the supabase service name?
+    default: supavisor
 
 #----- Supabase installation ----- 
 
