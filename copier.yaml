@@ -117,7 +117,7 @@ postgres_n8n_user:
     type: str
     when: "{{ not accept_name_defaults }}"
     help: What is the username for N8N postgres?
-    default: postgress_n8n
+    default: postgres_n8n
     
 postgress_n8n_password:
     type: str
