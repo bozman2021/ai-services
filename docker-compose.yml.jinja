@@ -1,5 +1,5 @@
-{{network_name}}:
-  cloudl3net-ai2:
+networks:
+  {{network_name}}:
     driver: ipvlan
     driver_opts:
       parent: enX0 # the interface on your docker host that it will tunnel through
@@ -269,6 +269,7 @@ services:
   {{realtime_service_name}}:
     # This container name looks inconsistent but is correct because realtime constructs tenant id by parsing the subdomain
     container_name: realtime-dev.supabase-{{realtime_service_name}}
+    image: supabase/realtime:v2.34.31
     restart: unless-stopped
     depends_on:
       # Disable this if you are using an external Postgres database
