@@ -50,9 +50,9 @@ mkdir -p ./data/flowise ./data/n8n/backup \
  ./data/kong/api \
  ./data/supabase/imageproxy/storage \
  ./data/supabase/vector/logs \
- ./supabase/pooler \
- ./supabase/storage \
- ./supabase/edge/functions \
+ ./data/supabase/pooler \
+ ./data/supabase/storage \
+ ./data/supabase/edge/functions \
 
 ````
 
