@@ -452,7 +452,7 @@ services:
 
   # Comment out everything below this point if you are using an external Postgres database
   {{postgres_supabase_db}}:
-    container_name: supabase-db
+    container_name: supabase-{{postgres_supabase_db}}
     image: supabase/postgres:15.8.1.044
     restart: unless-stopped
     volumes:
