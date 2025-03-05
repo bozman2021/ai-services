@@ -93,7 +93,7 @@ x_n8n_service_name:
     type: str
     when: "{{ accept_name_defaults and false }}"
     help: What is the x-n8n service name?
-    default: x_n8n
+    default: x-n8n
 
 n8n_import_service_name:
     type: str
@@ -131,6 +131,12 @@ postgres_n8n_db:
     when: "{{ not accept_name_defaults }}"
     help: What is the postgres databasename for N8N?
     default: db
+    
+postgres_n8n_host:
+    type: str
+    when: "{{ not accept_name_defaults }}"
+    help: What is the postgres host for N8N?
+    default: postgres_n8n
 
 qdrant_import_service_name:
     type: str
@@ -217,6 +223,12 @@ postgress_supabase_password:
   help: What is your SUPABASE POSTGRES PASSWORD, press enter to regenerate it?
   default: >-
     {{ 99999999 | ans_random | hash('sha256') | truncate(16, True) }}
+
+postgres_supabase_host:
+    type: str
+    when: "{{ not accept_name_defaults }}"
+    help: What is the postgres host for SUPABASE?
+    default: postgres_supabase
 
 jwt_secret:
     type: str
