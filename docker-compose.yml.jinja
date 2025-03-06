@@ -81,6 +81,9 @@ services:
     depends_on:
       {{postgres_n8n_service_name}}:
         condition: service_healthy
+    networks:
+      cloudl3net-ai2:
+        ipv4_address: 192.168.23.57
         
   #--- N8N ---
   {{n8n_service_name}}:
