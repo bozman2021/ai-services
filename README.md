@@ -52,7 +52,7 @@ mkdir -p ./data/flowise ./data/n8n/backup \
  ./data/supabase/vector/logs \
  ./data/supabase/pooler \
  ./data/supabase/storage \
- ./data/supabase/edge/functions \
+ ./data/supabase/edge/functions 
 
 ````
 
