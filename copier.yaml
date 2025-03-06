@@ -121,7 +121,6 @@ postgres_n8n_user:
     
 postgress_n8n_password:
     type: str
-    when: "{{ not accept_name_defaults }}"
     help: What is the password for N8N postgres?
     default: >-
       {{ 99999999 | ans_random | hash('sha256') | regex_replace('[^A-Za-z0-9!@#$%^&*()_+=?.-]', '') | truncate(16, True) }}
