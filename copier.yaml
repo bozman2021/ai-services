@@ -35,6 +35,8 @@ _exclude:
   - /vendor
 _subdirectory: 
   data
+_dest:
+  data
 
   
 #questions:
