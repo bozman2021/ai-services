@@ -116,7 +116,7 @@ services:
       - ${DATA_DIR-./data}/qdrant_storage:/qdrant/storage
     networks:
       {{network_name}}:
-        ipv4_address: 192.168.23.55
+        ipv4_address: 192.168.23.65
  
   {{studio_service_name}}:
     container_name: supabase-{{studio_service_name}}
