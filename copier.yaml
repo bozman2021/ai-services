@@ -34,7 +34,7 @@ _exclude:
   - /tests
   - /vendor
 _subdirectory: 
-  - /data
+  data
 
   
 #questions:
