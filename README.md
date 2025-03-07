@@ -72,7 +72,7 @@ Move files into correct location, copier has this limitation.
 (no yet found solution on this)
 
 ````
-  mv -t ./data/ \
+mv -tRf ./data/ \
  ./flowise \
  ./n8n \
  ./api \
