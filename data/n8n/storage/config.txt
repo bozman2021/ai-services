@@ -1,0 +1,3 @@
+{
+	"encryptionKey": "EMkEKKEvynTo4JnMMTv2mx4kXiVLuCBw"
+}
