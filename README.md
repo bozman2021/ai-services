@@ -42,9 +42,12 @@ cd $STACK_DIR
 
 ````
 mkdir -p ./data/flowise ./data/n8n/backup \
- ./data/n8n/backup \
+ ./data/apip \
+ ./data/functions \
+ ./data/flowise \
  ./data/postgres_storage \
- ./data/n8n/backup \
+ ./data/n8n/backup/workflows \
+ ./logs/ \
  ./data/shared \
  ./data/qdrant_storage \
  ./data/kong/api \
