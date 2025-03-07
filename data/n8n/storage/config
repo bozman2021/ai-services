@@ -1,3 +1,3 @@
 {
-	"encryptionKey": "EMkEKKEvynTo4JnMMTv2mx4kXiVLuCBw"
+	"encryptionKey": "${N8N_ENCRYPTION_KEY}"
 }
