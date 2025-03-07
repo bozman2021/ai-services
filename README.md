@@ -73,18 +73,17 @@ Move files into correct location, copier has this limitation.
 
 ````
   mv -t ./data/ \
- ~/flowise \
- ~/n8n \
- ~/api \
- ~/functions \
- ~/flowise \
- ~/postgres_storage \
- ~/logs \
- ~/shared \
- ~/qdrant_storage \
- ~/kong/api \
- ~/supabase/imageproxy/storage \
- ~/supabase
+ ./flowise \
+ ./n8n \
+ ./api \
+ ./functions \
+ ./flowise \
+ ./postgres_storage \
+ ./logs \
+ ./shared \
+ ./qdrant_storage \
+ ./kong/api \
+ ./supabase
 
 ````
 
