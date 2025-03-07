@@ -34,16 +34,7 @@ _exclude:
   - /tests
   - /vendor
 _subdirectory: 
-  - /data/api
-  - /data/functions
-  - /data/flowise
-  - /data/postgres_storage
-  - /data/n8n/backup/workflows
-  - /data/logs
-  - /data/shared
-  - /data/qdrant_storage
-  - /data/kong/api
-  - /data/supabase 
+  - /data
 
   
 #questions:
