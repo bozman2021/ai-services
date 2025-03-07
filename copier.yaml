@@ -33,8 +33,7 @@ _exclude:
   - /tasks_downstream.py
   - /tests
   - /vendor
-_subdirectory: data
-_dest: data
+_subdirectory: .
 
   
 #questions:
