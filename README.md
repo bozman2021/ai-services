@@ -68,6 +68,25 @@ copier copy gh:bozman2021/ai-services .
 
 This will create a new directory in the STACK_DIR with the all the files necessary to run the tunnel.
 
+Move files into correct location, copier has this limitation.
+(no yet found solution on this)
+
+````
+  mv -t ./data/ \
+ ~/flowise \
+ ~/n8n \
+ ~/api \
+ ~/functions \
+ ~/flowise \
+ ~/postgres_storage \
+ ~/logs \
+ ~/shared \
+ ~/qdrant_storage \
+ ~/kong/api \
+ ~/supabase/imageproxy/storage \
+ ~/supabase
+
+````
 
 **Start the Services**
 
