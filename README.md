@@ -47,7 +47,7 @@ mkdir -p ./data/flowise ./data/n8n/backup \
  ./data/flowise \
  ./data/postgres_storage \
  ./data/n8n/backup/workflows \
- ./logs/ \
+ ./data/logs \
  ./data/shared \
  ./data/qdrant_storage \
  ./data/kong/api \
