@@ -33,6 +33,17 @@ _exclude:
   - /tasks_downstream.py
   - /tests
   - /vendor
+_subdirectory: 
+  - /data/api
+  - /data/functions
+  - /data/flowise
+  - /data/postgres_storage
+  - /data/n8n/backup/workflows
+  - /logs
+  - /data/shared
+  - /data/qdrant_storage
+  - /data/kong/api
+  - /data/supabase 
 
   
 #questions:
