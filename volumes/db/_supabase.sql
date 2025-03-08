@@ -1,3 +1,3 @@
-\set pguser `echo "$POSTGRES_SUPABASE_USER"`
+\set pguser `echo "$POSTGRES_USER"`
 
-CREATE DATABASE _supabase WITH OWNER postgres;
+CREATE DATABASE _supabase WITH OWNER :pguser;
