@@ -120,7 +120,7 @@ postgress_n8n_password:
     type: str
     help: What is the password for N8N postgres?
     default: >-
-      {{ (99999999 | ans_random | hash('sha256') | b64encode | regex_replace('[^A-Za-z0-9!@#$%^&*()_+=-]', '') )[:16] }}      
+      {{ (99999999 | ans_random | hash('sha256') | b64encode | regex_replace('[^A-Za-z0-9!@#$%^&*()_+=-]', '') | trim)[:16] }}
 postgres_n8n_db:
     type: str
     when: "{{ not accept_name_defaults }}"
@@ -235,8 +235,8 @@ postgress_supabase_password:
   type: str
   help: What is your SUPABASE POSTGRES PASSWORD, press enter to regenerate it?
   default: >-
-      {{ (99999999 | ans_random | hash('sha256') | b64encode | regex_replace('[^A-Za-z0-9!@#$%^&*()_+=-]', '') )[:16] }}      
-
+      {{ (99999999 | ans_random | hash('sha256') | b64encode | regex_replace('[^A-Za-z0-9!@#$%^&*()_+=-]', '') | trim)[:16] }}
+      
 postgres_supabase_user:
    type: str
    when: "{{ not accept_supa_name_defaults }}"
