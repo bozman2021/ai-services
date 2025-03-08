@@ -106,7 +106,8 @@ Easy chart over dependecies.
 
 ```mermaid
 graph TD;
-    Client_on_Internet-->|202|Caddy;
+    Internet-->Client_Website;
+    Client_Website-->|202|Caddy;
     Caddy-->OpenWebUI;
     OpenWebUI-->Ollama;
     Ollama-->N8N;
@@ -137,6 +138,6 @@ graph TD;
     Internet-->Opentext_Documentation;
     Internet-->Cyberark_Documentation;
     Internet-->ID-North_Documentation;
-    Client_on_Internet-->|403|Ollama_gets_403_error;
+    Client_Website-->|403|Ollama_gets_403_error;
 
 ```
