@@ -154,6 +154,9 @@ services:
       NEXT_ANALYTICS_BACKEND_PROVIDER: ${POSTGRES_SUPABASE_DB}
       # Uncomment to use Big Query backend for analytics
       # NEXT_ANALYTICS_BACKEND_PROVIDER: bigquery
+    networks:
+      {{network_name}}:
+        ipv4_address: 192.168.24.124
 
   {{kong_service_name}}:
     container_name: supabase-{{kong_service_name}}
@@ -182,6 +185,9 @@ services:
       DASHBOARD_PASSWORD: ${DASHBOARD_PASSWORD}
       # https://unix.stackexchange.com/a/294837
     entrypoint: bash -c 'eval "echo \"$$(cat ~/temp.yml)\"" > ~/kong.yml && /docker-entrypoint.sh kong docker-start'
+    networks:
+      {{network_name}}:
+        ipv4_address: 192.168.24.130
 
   {{auth_service_name}}:
     container_name: supabase-{{auth_service_name}}
@@ -253,6 +259,9 @@ services:
       # GOTRUE_HOOK_SEND_EMAIL_ENABLED: "false"
       # GOTRUE_HOOK_SEND_EMAIL_URI: "http://host.docker.internal:54321/functions/v1/email_sender"
       # GOTRUE_HOOK_SEND_EMAIL_SECRETS: "v1,whsec_VGhpcyBpcyBhbiBleGFtcGxlIG9mIGEgc2hvcnRlciBCYXNlNjQgc3RyaW5n"
+    networks:
+      {{network_name}}:
+        ipv4_address: 192.168.24.188
 
   {{rest_service_name}}:
     container_name: supabase-{{rest_service_name}}
@@ -276,6 +285,9 @@ services:
       [
         "postgrest"
       ]
+  networks:
+      {{network_name}}:
+        ipv4_address: 192.168.24.190
 
   {{realtime_service_name}}:
     # This container name looks inconsistent but is correct because realtime constructs tenant id by parsing the subdomain
@@ -321,6 +333,9 @@ services:
       APP_NAME: realtime
       SEED_SELF_HOST: true
       RUN_JANITOR: true
+    networks:
+      {{network_name}}:
+        ipv4_address: 192.168.24.85
 
   # Tod use S3 backed storage: docker compose -f docker-compose.yml -f docker-compose.s3.yml up
   {{storage_service_name}}:
@@ -357,6 +372,9 @@ services:
       GLOBAL_S3_BUCKET: stub
       ENABLE_IMAGE_TRANSFORMATION: "true"
       IMGPROXY_URL: http://{{imgproxy_service_name}}:5001
+    networks:
+      {{network_name}}:
+        ipv4_address: 192.168.24.180
 
   {{imgproxy_service_name}}:
     container_name: supabase-{{imgproxy_service_name}}
@@ -395,6 +413,9 @@ services:
       PG_META_DB_NAME: ${POSTGRES_SUPABASE_DB}
       PG_META_DB_USER: supabase_admin
       PG_META_DB_PASSWORD: ${POSTGRES_SUPABASE_PASSWORD}
+    networks:
+      {{network_name}}:
+        ipv4_address: 192.168.24.160
 
   {{functions_edge_service_name}}:
     container_name: supabase-edge-{{functions_edge_service_name}}
@@ -419,6 +440,9 @@ services:
        "--main-service",
        "/home/deno/functions/main"
       ]
+    networks:
+      {{network_name}}:
+        ipv4_address: 192.168.24.155
 
   {{analytics_service_name}}:
     container_name: supabase-{{analytics_service_name}}
@@ -515,6 +539,9 @@ services:
         "log_min_messages=fatal" 
         # prevents Realtime polling queries from appearing in logs 
       ]
+    networks:
+      {{network_name}}:
+        ipv4_address: 192.168.24.150
 
   {{vector_service_name}}:
     container_name: supabase-{{vector_service_name}}
@@ -582,3 +609,6 @@ services:
        "-c",
        "/app/bin/migrate && /app/bin/supavisor eval \"$$(cat /etc/pooler/pooler.exs)\" && /app/bin/server"
       ]
+          networks:
+      {{network_name}}:
+        ipv4_address: 192.168.24.66
