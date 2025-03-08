@@ -110,7 +110,7 @@ graph TD;
     Caddy-->OpenWebUI;
     OpenWebUI-->Ollama;
     Ollama-->N8N;
-    N8N-->Supabsase;
+    N8N-->Supabase;
     Supabase-->Studio;
     Supabase-->Kong;
     Supabase-->Auth;
