@@ -29,7 +29,7 @@ _exclude:
   - /tests
   - /vendor
   
-_subdirectory: data
+#_subdirectory: data
 
   
 #questions:
