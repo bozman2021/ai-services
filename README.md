@@ -68,37 +68,39 @@ copier copy gh:bozman2021/ai-services .
 
 This will create a new directory in the STACK_DIR with the all the files necessary to run the tunnel.
 
-Move files into correct location, copier has this limitation.
-(no yet found solution on this)
 
-````
-mv -tRf ./data/ \
- ./flowise \
- ./n8n \
- ./api \
- ./functions \
- ./flowise \
- ./postgres_storage \
- ./logs \
- ./shared \
- ./qdrant_storage \
- ./kong/api \
- ./supabase
 
-````
 
 **Start the Services**
 
 Change into the project directory and start the services in the foreground:
 
+**First start the supabase services.
+
 ````
-docker compose up --build
+docker compose -f docker-compose-supa.yml up --build
 ````
 _in detached mode_
 
 ````
-docker compose up --build -d
+docker compose -f docker-compose-supa.yml up --build -d
 ````
+wait 1 mim.
+
+Second start the n8n services.
+
+````
+docker compose -f docker-compose-n8n.yml up --build
+````
+_in detached mode_
+
+````
+docker compose -f docker-compose-n8n.yml up --build -d
+````
+
+
+
+
 Easy chart over dependecies.
 (https://mermaid.js.org/#/)<br>
 
@@ -107,8 +109,22 @@ graph TD;
     Client_on_Internet-->|202|Caddy;
     Caddy-->OpenWebUI;
     OpenWebUI-->Ollama;
+    Ollama-->N8N;
+    N8N-->Supabsase;
+    Supabase-->Studio;
+    Supabase-->Kong;
+    Supabase-->Auth;
+    Supabase-->Rest;
+    Supabase-->Realtime;
+    Supabase-->Storage;
+    Supabase-->ImgProxy;
+    Supabase-->Meta;
+    Supabase-->Functions;
+    Supabase-->Analytics;
+    Supabase-->PostgresDB;
+    Supabase-->Vector;
+    Supabase-->Supavisor;
     OpenWebUI-->N8N;
-    N8N-->Supabase;
     N8N-->OpenWebUI;
     OpenWebUI-->LiteLLM;
     Ollama-->LiteLLM;
