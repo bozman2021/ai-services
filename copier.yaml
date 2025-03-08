@@ -4,15 +4,13 @@ _templates_suffix: .jinja
 _min_copier_version: "9.0.0"
 # configurations
 _exclude:
-  - copier.yaml
-  - copier.yml
+
   - ~*
   - "*.py[co]"
   - __pycache__
   - .git
   - .DS_Store
   - .svn"
-  - data
   - _macros
   - _traefik*_labels.yml
   - /.git
@@ -23,7 +21,6 @@ _exclude:
   - /**.pyc
   - /**.pyo
   - /CONTRIBUTING.md
-  - /copier.yml
   - /COPYING
   - /docs
   - /migrations.py
@@ -33,6 +30,7 @@ _exclude:
   - /tasks_downstream.py
   - /tests
   - /vendor
+  
 _subdirectory: data
 
   
