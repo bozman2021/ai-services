@@ -51,28 +51,28 @@ services:
         ipv4_address: 192.168.23.40
         
   #--- PostgreSQL ---
-  {{postgres_n8n_service_name}}:
-    container_name: {{postgres_n8n_service_name}}
-    image: postgres:16-alpine 
-    restart: unless-stopped
-    environment:
-      - DB_POSTGRESDB_HOST=${POSTGRES_N8N_HOST}
-      - DB_POSTGRESDB_USER=${POSTGRES_N8N_USER}
-      - DB_POSTGRESDB_PASSWORD=${POSTGRES_N8N_PASSWORD}
-      - POSTGRES_PASSWORD=${POSTGRES_N8N_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_N8N_DB}
-    ports:
-      - "5432:5432"
-    volumes:
-      - ./postgres_storage:/var/lib/postgresql/data
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -h localhost -U ${POSTGRES_N8N_USER} -d ${POSTGRES_N8N_DB}']
-      interval: 5s
-      timeout: 5s
-      retries: 10
-    networks:
-      cloudl3net-ai2:
-        ipv4_address: 192.168.23.50
+  #{{postgres_n8n_service_name}}:
+  #  container_name: {{postgres_n8n_service_name}}
+  #  image: postgres:16-alpine 
+  #  restart: unless-stopped
+  #  environment:
+  #    - DB_POSTGRESDB_HOST=db
+  #    - DB_POSTGRESDB_USER=${POSTGRES_N8N_USER}
+  #    - DB_POSTGRESDB_PASSWORD=${POSTGRES_N8N_PASSWORD}
+  #    - POSTGRES_PASSWORD=${POSTGRES_N8N_PASSWORD}
+  #    - POSTGRES_DB=${POSTGRES_N8N_DB}
+  #  ports:
+  #    - "5432:5432"
+  #  volumes:
+  #    - ./postgres_storage:/var/lib/postgresql/data
+  #  healthcheck:
+  #    test: ['CMD-SHELL', 'pg_isready -h localhost -U ${POSTGRES_N8N_USER} -d ${POSTGRES_N8N_DB}']
+  #    interval: 5s
+  #    timeout: 5s
+  #    retries: 10
+  #  networks:
+  #    cloudl3net-ai2:
+  #      ipv4_address: 192.168.23.50
 
   #--- N8N-import ---
   {{n8n_import_service_name}}:
@@ -84,9 +84,9 @@ services:
       - "n8n import:credentials --separate --input=/backup/credentials && n8n import:workflow --separate --input=/backup/workflows"
     volumes:
       - ./n8n/backup:/backup
-    depends_on:
-      {{postgres_n8n_service_name}}:
-        condition: service_healthy
+    #depends_on:
+    #  {{postgres_n8n_service_name}}:
+    #    condition: service_healthy
     networks:
       cloudl3net-ai2:
         ipv4_address: 192.168.23.57
@@ -103,8 +103,8 @@ services:
       - ./n8n/backup:/backup
       - ./shared:/data/shared
     depends_on:
-      {{postgres_n8n_service_name}}:
-        condition: service_healthy
+      #{{postgres_n8n_service_name}}:
+      #  condition: service_healthy
       {{n8n_import_service_name}}:
         condition: service_completed_successfully
     networks:
