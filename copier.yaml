@@ -108,7 +108,7 @@ postgres_n8n_service_name:
     type: str
     when: "{{ not accept_name_defaults }}"
     help: What is the postgres for N8N service name?
-    default: db_n8n
+    default: db
     
 postgres_n8n_user:
     type: str
@@ -132,7 +132,7 @@ postgres_n8n_host:
     type: str
     when: "{{ not accept_name_defaults }}"
     help: What is the postgres host for N8N?
-    default: postgres_n8n
+    default: postgres
 
 qdrant_import_service_name:
     type: str
@@ -249,7 +249,7 @@ postgres_supabase_host:
     type: str
     when: "{{ not accept_name_defaults }}"
     help: What is the postgres host for SUPABASE?
-    default: postgres_supabase
+    default: postgres
 
 jwt_secret:
     type: str
