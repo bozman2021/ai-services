@@ -461,7 +461,10 @@ services:
       # Uncomment to use Big Query backend for analytics
       # GOOGLE_PROJECT_ID: ${GOOGLE_PROJECT_ID}
       # GOOGLE_PROJECT_NUMBER: ${GOOGLE_PROJECT_NUMBER}
-
+    networks:
+      {{network_name}}:
+        ipv4_address: 192.168.24.14
+        
   # Comment out everything below this point if you are using an external Postgres database
   {{postgres_supabase_db}}:
     container_name: supabase-{{postgres_supabase_db}}
