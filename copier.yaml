@@ -108,7 +108,7 @@ postgres_n8n_service_name:
     type: str
     when: "{{ not accept_name_defaults }}"
     help: What is the postgres for N8N service name?
-    default: db
+    default: db_n8n
     
 postgres_n8n_user:
     type: str
