@@ -609,6 +609,6 @@ services:
        "-c",
        "/app/bin/migrate && /app/bin/supavisor eval \"$$(cat /etc/pooler/pooler.exs)\" && /app/bin/server"
       ]
-          networks:
+    networks:
       {{network_name}}:
         ipv4_address: 192.168.24.66
