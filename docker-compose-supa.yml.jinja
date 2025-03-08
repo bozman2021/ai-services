@@ -11,15 +11,10 @@ networks:
     name: {{network_name}}
 
 volumes:
-  n8n_storage:
-  qdrant_storage:
-  open-webui:
-  flowise:
   db-config:
 
-
 services:
-{{studio_service_name}}:
+  {{studio_service_name}}:
     container_name: supabase-{{studio_service_name}}
     image: supabase/studio:20250224-d10db0f
     restart: unless-stopped
