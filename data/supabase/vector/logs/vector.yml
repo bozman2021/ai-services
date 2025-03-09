@@ -156,7 +156,7 @@ transforms:
       .metadata.parsed.error_severity = upcase!(.metadata.parsed.error_severity)
 
 sinks:
-  logflare_auth:
+  auth:
     type: 'http'
     inputs:
       - auth_logs
@@ -165,8 +165,8 @@ sinks:
     method: 'post'
     request:
       retry_max_duration_secs: 10
-    uri: 'http://analytics:4000/api/logs?source_name=gotrue.logs.prod&api_key=${LOGFLARE_API_KEY}'
-  logflare_realtime:
+    uri: 'http://analytics:4000/api/logs?source_name=gotrue.logs.prod&api_key=${LOGFLARE_API_KEY?LOGFLARE_API_KEY is required}'
+  realtime:
     type: 'http'
     inputs:
       - realtime_logs
@@ -175,8 +175,8 @@ sinks:
     method: 'post'
     request:
       retry_max_duration_secs: 10
-    uri: 'http://analytics:4000/api/logs?source_name=realtime.logs.prod&api_key=${LOGFLARE_API_KEY}'
-  logflare_rest:
+    uri: 'http://analytics:4000/api/logs?source_name=realtime.logs.prod&api_key=${LOGFLARE_API_KEY?LOGFLARE_API_KEY is required}'
+  rest:
     type: 'http'
     inputs:
       - rest_logs
@@ -185,8 +185,8 @@ sinks:
     method: 'post'
     request:
       retry_max_duration_secs: 10
-    uri: 'http://analytics:4000/api/logs?source_name=postgREST.logs.prod&api_key=${LOGFLARE_API_KEY}'
-  logflare_db:
+    uri: 'http://analytics:4000/api/logs?source_name=postgREST.logs.prod&api_key=${LOGFLARE_API_KEY?LOGFLARE_API_KEY is required}'
+  db:
     type: 'http'
     inputs:
       - db_logs
@@ -198,8 +198,8 @@ sinks:
     # We must route the sink through kong because ingesting logs before logflare is fully initialised will
     # lead to broken queries from studio. This works by the assumption that containers are started in the
     # following order: vector > db > logflare > kong
-    uri: 'http://kong:8000/analytics/v1/api/logs?source_name=postgres.logs&api_key=${LOGFLARE_API_KEY}'
-  logflare_functions:
+    uri: 'http://kong:8000/analytics/v1/api/logs?source_name=postgres.logs&api_key=${LOGFLARE_API_KEY?LOGFLARE_API_KEY is required}'
+  functions:
     type: 'http'
     inputs:
       - router.functions
@@ -208,8 +208,8 @@ sinks:
     method: 'post'
     request:
       retry_max_duration_secs: 10
-    uri: 'http://analytics:4000/api/logs?source_name=deno-relay-logs&api_key=${LOGFLARE_API_KEY}'
-  logflare_storage:
+    uri: 'http://analytics:4000/api/logs?source_name=deno-relay-logs&api_key=${LOGFLARE_API_KEY?LOGFLARE_API_KEY is required}'
+  storage:
     type: 'http'
     inputs:
       - storage_logs
@@ -218,8 +218,8 @@ sinks:
     method: 'post'
     request:
       retry_max_duration_secs: 10
-    uri: 'http://analytics:4000/api/logs?source_name=storage.logs.prod.2&api_key=${LOGFLARE_API_KEY}'
-  logflare_kong:
+    uri: 'http://analytics:4000/api/logs?source_name=storage.logs.prod.2&api_key=${LOGFLARE_API_KEY?LOGFLARE_API_KEY is required}'
+  kong:
     type: 'http'
     inputs:
       - kong_logs
@@ -229,4 +229,4 @@ sinks:
     method: 'post'
     request:
       retry_max_duration_secs: 10
-    uri: 'http://analytics:4000/api/logs?source_name=cloudflare.logs.prod&api_key=${LOGFLARE_API_KEY}'
+    uri: 'http://analytics:4000/api/logs?source_name=cloudflare.logs.prod&api_key=${LOGFLARE_API_KEY?LOGFLARE_API_KEY is required}'
