@@ -18,6 +18,8 @@ services:
     container_name: supabase-{{studio_service_name}}
     image: supabase/studio:20250224-d10db0f
     restart: unless-stopped
+    ports:
+      - "3000:3000
     healthcheck:
       test: [ "CMD","node","-e","fetch('http://studio:3000/api/platform/profile').then((r) => {if (r.status !== 200) throw new Error(r.status)})" ]
       timeout: 10s
@@ -83,6 +85,8 @@ services:
     container_name: supabase-{{auth_service_name}}
     image: supabase/gotrue:v2.169.0
     restart: unless-stopped
+    ports:
+      - "9999:9999"
     healthcheck:
       test:
         [
@@ -157,6 +161,8 @@ services:
     container_name: supabase-{{rest_service_name}}
     image: postgrest/postgrest:v12.2.8
     restart: unless-stopped
+    ports:
+      - "3000:3000"    
     depends_on:
       # Disable this if you are using an external Postgres database
       {{postgres_supabase_db}}:
@@ -184,6 +190,8 @@ services:
     container_name: realtime-dev.supabase-{{realtime_service_name}}
     image: supabase/realtime:v2.34.31
     restart: unless-stopped
+    ports:
+      - "4000:4000"
     depends_on:
       # Disable this if you are using an external Postgres database
       {{postgres_supabase_db}}:
@@ -232,6 +240,8 @@ services:
     container_name: supabase-{{storage_service_name}}
     image: supabase/storage-api:v1.19.1
     restart: unless-stopped
+    ports:
+      - "5000:5000"
     volumes:
       - ${DATA_DIR-./data}/supabase/storage:/var/lib/storage:z
     healthcheck:
@@ -270,6 +280,8 @@ services:
     container_name: supabase-{{imgproxy_service_name}}
     image: darthsim/imgproxy:v3.8.0
     restart: unless-stopped
+    ports:
+      - "5001:5001"
     volumes:
        - ${DATA_DIR-./data}/supabase/imageproxy/storage:/var/lib/storage:z
     healthcheck:
@@ -290,6 +302,8 @@ services:
     container_name: supabase-{{meta_service_name}}
     image: supabase/postgres-meta:v0.86.0
     restart: unless-stopped
+    ports:
+      - "8080:8080"
     depends_on:
       {{postgres_supabase_db}}:
         # Disable this if you are using an external Postgres database
@@ -339,7 +353,7 @@ services:
     image: supabase/logflare:1.11.0
     restart: unless-stopped
     ports:
-      - 4000:4000
+      - "4000:4000"
     # Uncomment to use Big Query backend for analytics
     # volumes:
     #   - type: bind
@@ -367,7 +381,6 @@ services:
       LOGFLARE_SINGLE_TENANT: true
       LOGFLARE_SUPABASE_MODE: true
       LOGFLARE_MIN_CLUSTER_SIZE: 1
-
       # Comment variables to use Big Query backend for analytics
       POSTGRES_BACKEND_URL: postgresql://supabase_admin:${POSTGRES_SUPABASE_PASSWORD}@${POSTGRES_SUPABASE_HOST}:${POSTGRES_SUPABASE_PORT}/_supabase
       POSTGRES_BACKEND_SCHEMA: _analytics
@@ -384,6 +397,8 @@ services:
     container_name: supabase-{{postgres_supabase_db}}
     image: supabase/postgres:15.8.1.044
     restart: unless-stopped
+    ports:
+      - "${POSTGRES_SUPABASE_PORT}:${POSTGRES_SUPABASE_PORT}"
     volumes:
       - ./volumes/db/realtime.sql:/docker-entrypoint-initdb.d/migrations/99-realtime.sql:Z
       # Must be superuser to create event trigger
@@ -437,6 +452,8 @@ services:
     container_name: supabase-{{vector_service_name}}
     image: timberio/vector:0.28.1-alpine
     restart: unless-stopped
+    ports:
+      -  "9001:9001"
     volumes:
       - ${DATA_DIR-./data}/supabase/vector/logs/:/etc/vector/:ro
       - ${DOCKER_SOCKET_LOCATION}:/var/run/docker.sock:ro
@@ -449,8 +466,8 @@ services:
       LOGFLARE_API_KEY: ${LOGFLARE_API_KEY}
     command:
       [
-       "--config",
-       "/etc/vector/vector.yml"
+        "--config",
+        "/etc/vector/vector.yml"
       ]
     networks:
       {{network_name}}:
@@ -479,8 +496,13 @@ services:
     environment:
       PORT: 4000
       POSTGRES_PORT: ${POSTGRES_SUPABASE_PORT}
+      DB_PORT: "${POSTGRES_SUPABASE_PORT}"
       POSTGRES_DB: ${POSTGRES_SUPABASE_DB}
-      POSTGRES_PASSWORD: ${POSTGRES_SUPABASE_PASSWORD}
+      DB_HOST: ${POSTGRES_SUPABASE_DB}
+      DB_USER: "${POSTGRES_SUPABASE_USER}"
+      POSTGRES_USER: supabase_admin
+      POSTGRES_PASSWORD: "${POSTGRES_SUPABASE_PASSWORD}"
+      DB_PASSWORD: "${POSTGRES_SUPABASE_PASSWORD}"
       DATABASE_URL: ecto://supabase_admin:${POSTGRES_SUPABASE_PASSWORD}@db:${POSTGRES_SUPABASE_PORT}/_supabase
       CLUSTER_POSTGRES: true
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
@@ -491,6 +513,7 @@ services:
       ERL_AFLAGS: -proto_dist inet_tcp
       POOLER_TENANT_ID: ${POOLER_TENANT_ID}
       POOLER_DEFAULT_POOL_SIZE: ${POOLER_DEFAULT_POOL_SIZE}
+      DEFAULT_POOL_SIZE: ${POOLER_DEFAULT_POOL_SIZE}
       POOLER_MAX_CLIENT_CONN: ${POOLER_MAX_CLIENT_CONN}
       POOLER_POOL_MODE: transaction
     command:
