@@ -312,7 +312,7 @@ services:
     image: supabase/edge-runtime:v1.67.2
     restart: unless-stopped
     volumes:
-      - ${DATA_DIR-./data}/supabase/edge/functions:/home/deno/functions:Z
+      - ${DATA_DIR-./data}/supabase/functions:/home/deno/functions:Z
     depends_on:
       {{analytics_service_name}}:
         condition: service_healthy
@@ -326,9 +326,9 @@ services:
       VERIFY_JWT: ${FUNCTIONS_VERIFY_JWT}
     command:
       [
-       "start",
-       "--main-service",
-       "/home/deno/functions/main"
+        "start",
+        "--main-service",
+        "/home/deno/functions/main"
       ]
     networks:
       {{network_name}}:
