@@ -9,9 +9,9 @@ networks:
         - subnet: 192.168.23.0/24 # your networks subnet
         - subnet: 192.168.24.0/24 # your networks subnet
     name: {{network_name}}
-
-volumes:
-  db-config:
+#removed due to error: https://github.com/supabase/supabase/issues/30834
+#volumes:
+  #db-config:
 
 services:
   {{studio_service_name}}:
@@ -401,7 +401,7 @@ services:
       # Changes required for Pooler support
       - ./volumes/db/pooler.sql:/docker-entrypoint-initdb.d/migrations/99-pooler.sql:Z
       # Use named volume to persist pgsodium decryption key between restarts
-      - db-config:/etc/postgresql-custom
+      ##- db-config:/etc/postgresql-custom
     healthcheck:
       test:  [ "CMD", "pg_isready", "-U", "postgres", "-h", "localhost" ]
       interval: 5s
