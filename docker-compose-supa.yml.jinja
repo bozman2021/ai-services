@@ -252,7 +252,7 @@ services:
       SERVICE_KEY: ${SERVICE_ROLE_KEY}
       POSTGREST_URL: http://rest:3000
       PGRST_JWT_SECRET: ${JWT_SECRET}
-      DATABASE_URL: postgres://supabase_storage_admin:${POSTGRES_SUPABASE_PASSWORD}@${POSTGRES_SUPABASE_HOST}:${POSTGRES_SUPABASE_PORT}/$${cat .enc}
+      DATABASE_URL: postgres://supabase_storage_admin:${POSTGRES_SUPABASE_PASSWORD}@${POSTGRES_SUPABASE_HOST}:${POSTGRES_SUPABASE_PORT}/$${cat .env}
       FILE_SIZE_LIMIT: 52428800
       STORAGE_BACKEND: file
       FILE_STORAGE_BACKEND_PATH: /var/lib/storage
