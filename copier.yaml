@@ -297,10 +297,9 @@ dashboard_username:
     
 dashboard_password:
     type: str
-    secret: true
     help: What is your Supabase Username password, press enter to regenerate it?
     default: >-
-      {{ 99999999 | ans_random | hash('sha256') | truncate(16, True) }}
+      {{ (99999999 | ans_random | hash('sha256') | b64encode | regex_replace('[^A-Za-z0-9!@#$%^&*()_+=-]', '') | trim)[:16] }}
 
 secret_key_base:
     type: str
