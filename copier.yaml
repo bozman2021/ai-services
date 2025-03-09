@@ -316,14 +316,14 @@ secret_key_base:
       
 vault_enc_key:
     type: str
-    help: What is your VAULT ENC KEY, press enter to regenerate it?
+    help: What is your VAULT ENC KEY, press enter to regenerate it(MUST BE 32 character, no more or less)?
     secret: true
     default: >-
       {{
         (
           ans_random | hash('sha512') | hash('sha256') |
           regex_replace('[^A-Za-z0-9!@#$%^&*()_+=?.-]', '') |
-          truncate(300, True, '')
+          truncate(32, True, '')
         )
       }}
 
