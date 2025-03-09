@@ -314,7 +314,7 @@ services:
     volumes:
       - ${DATA_DIR-./data}/supabase/edge/functions:/home/deno/functions:Z
     depends_on:
-      analytics:
+      {{analytics_service_name}}:
         condition: service_healthy
     environment:
       JWT_SECRET: ${JWT_SECRET}
@@ -323,12 +323,12 @@ services:
       SUPABASE_SERVICE_ROLE_KEY: ${SERVICE_ROLE_KEY}
       SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_SUPABASE_PASSWORD}@${POSTGRES_SUPABASE_HOST}:${POSTGRES_SUPABASE_PORT}/${POSTGRES_SUPABASE_DB}
       # TODO: Allow configuring VERIFY_JWT per function. This PR might help: https://github.com/supabase/cli/pull/786
-      VERIFY_JWT: "${FUNCTIONS_VERIFY_JWT}"
+      VERIFY_JWT: ${FUNCTIONS_VERIFY_JWT}
     command:
       [
        "start",
        "--main-service",
-       "/home/deno/functions/main"
+       "/home/demo/functions/main"
       ]
     networks:
       {{network_name}}:
